@@ -1,0 +1,188 @@
+import {Op} from 'sequelize';
+
+
+//---App---
+//Stayout Inquiry
+export const appInquiry = async(req, res, next) => {
+    try{
+        const data = await StayoutRequest.findAll({
+            where: { std_id: req.user.id },
+            order: [['stayout_id', 'DESC']],
+        });
+
+        return res.status(200).json(data);
+    }catch (err) {
+        console.error(err);
+        next(err);
+    }
+};
+
+//Stayout Search
+export const appSearch = async(req, res, next) => {
+    const { startDate } = req.body;
+    try{
+        console.log(req.body);
+        const data = await StayoutRequest.findAll({
+            where: {
+                std_id: req.user.id,
+                [Op.and]: [
+                    {start_date: {[Op.lte]: moment(startDate)}},
+                    {end_date: {[Op.gte]: moment(startDate)}},
+                ],
+            },
+            order: [['stayout_id', 'DESC']],
+        });
+
+        return res.status(200).json(data);
+    }catch (err) {
+        console.error(err);
+        next(err);
+    }
+};
+
+//Stayout Create
+export const appCreate = async(req, res, next) => {
+    const { start_date, end_date } = req.body;
+    try{
+        await StayoutRequest.create({
+            start_date,
+            end_date,
+            std_id: req.user.id,
+        });
+
+        return res.status(200).send('Success');
+    }catch (err) {
+        console.error(err);
+        next(err);
+    }
+};
+
+//Stayout Update
+export const appUpdate = async(req, res, next) => {
+    const { start_date, end_date, std_id, stayout_id } = req.body;
+    try{
+        const data = await StayoutRequest.update({
+            start_date,
+            end_date,
+            where: {
+                std_id,
+                stayout_id,
+            },
+        });
+
+        return res.status(200).json(data);
+    }catch (err) {
+        console.error(err);
+        next(err);
+    }
+};
+
+//Stayout Delete
+export const appDelete = async(req, res, next) => {
+    const { stayout_id } = req.body;
+    try{
+        console.log(req.body);
+        const data = await StayoutRequest.destory({
+            where: {
+                stayout_id,
+            },
+        });
+
+        return res.status(200).json(data);
+    }catch (err) {
+        console.error(err);
+        next(err);
+    }
+};
+
+//---Web---
+//Stayout Inquiry
+export const adminInquiry = async(req, res, next) => {
+    const { std_id, std_name, nowPage } = req.body;
+    try{
+        let Id = std_id;
+        let Name = std_name;
+        let page = nowPage;
+        Id = Id || { [Op.ne]: null };
+        Name = Name || { [Op.ne]: null };
+        if(!page){
+            page = 1;
+        }
+        const data = await StayoutRequest.findAll({
+            include: [
+                {
+                    model: StdInfo,
+                    where: {
+                        std_id: Id,
+                        std_name: Name,
+                    },
+                },
+            ],
+            order: [['stayout_id', 'DESC']],
+            limit: 10,
+            offset: (page - 1) * 10,
+        });
+
+        return res.status(200).json(data);
+    }catch (err) {
+        console.error(err);
+        next(err);
+    }
+};
+
+//Stayout PageNum
+export const adminPageNum = async(req, res, next) => {
+    const { std_id, std_name } = req.body;
+    try{
+        let Id = std_id;
+        let Name = std_name;
+        Id = Id || { [Op.ne]: null };
+        Name = Name || { [Op.ne]: null };
+        const data = await StayoutRequest.findAndCountAll({
+            include: [
+                {
+                    model: StdInfo,
+                    where: {
+                        std_id: Id,
+                        std_name: Name,
+                    },
+                },
+            ],
+        });
+
+        return res.status(200).json(data);
+    }catch (err) {
+        console.error(err);
+        next(err);
+    }
+};
+
+//Stayout People Date
+export const adminPeopleDate = async(req, res, next) => {
+    try{
+        const dataArr = [];
+        const now = new Date();
+        now.setHours(0);
+        now.setMinutes(0);
+        now.setSeconds(0);
+        for(let i = 0; i < 31; i++){
+            const data = await StayoutRequest.findAndCountAll({
+                where: {
+                    start_date: {
+                        [Op.lte]: moment(now),
+                    },
+                    end_date: {
+                        [Op.gte]: moment(now),
+                    },
+                },
+            });
+            now.setDate(now.getDate() + 1);
+            dataArr.push(data);
+        }
+        
+        return res.status(200).send(dataArr);
+    }catch (err) {
+        console.error(err);
+        next(err);
+    }
+};
