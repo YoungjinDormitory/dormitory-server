@@ -12,6 +12,7 @@ import stayoutRouter from './routers/stayoutRouter';
 import hotRouter from './routers/hotRouter';
 import bulletinRouter from './routers/bulletinRouter';
 import commentRouter from './routers/commentRouter';
+import menuRouter from './routers/menuRouter';
 
 const app = express();
 const logger = morgan('dev');
@@ -45,6 +46,7 @@ app.use('/stayout', stayoutRouter);
 app.use('/hot', hotRouter);
 app.use('/bulletin', bulletinRouter);
 app.use('/comment', commentRouter);
+app.use('/menu', menuRouter);
 
 
 export default app;

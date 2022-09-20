@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "llijkms4114!!",
-    "database": "database_development",
+    "database": "dormitory",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },

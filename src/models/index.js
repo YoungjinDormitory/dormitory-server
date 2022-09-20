@@ -11,6 +11,8 @@ export const sequelize = new Sequelize(
   config
 );
 
+db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-module.exports = db;
+
+export default db;
