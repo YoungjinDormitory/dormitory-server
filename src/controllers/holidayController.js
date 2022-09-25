@@ -1,4 +1,5 @@
 import { Op } from 'sequelize';
+import Holiday from '../models/holiday';
 
 //---Web---
 //Holiday Inquiry

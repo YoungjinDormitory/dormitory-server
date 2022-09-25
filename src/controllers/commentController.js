@@ -1,4 +1,4 @@
-//db;
+import Comment from '../models/comment';
 
 //---App---
 //Comment Inquiry

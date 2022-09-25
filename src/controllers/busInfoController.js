@@ -1,13 +1,12 @@
-import { Sequelize } from '../models';
-import { Op } from 'sequelize';
-import busInfoRouter from '../routers/busInfoRouter';
+import Sequelize from '../models';
+import BusInfo from '../models/bus_info';
 
 
 //---App---
 //bus Inquiry
 export const appBusInfo = async(req, res, next) => {
     try{
-        const data = await busInfoRouter.findAll();
+        const data = await BusInfo.findAll();
         res.json(data);
     }catch (err) {
         console.error(err);
@@ -49,7 +48,7 @@ export const appBusTime = async(req, res, next) => {
 
 //---Web---
 //bus Inquiry
-export const adminInquiry = async(req, res, next) => {
+export const admBusInquiry = async(req, res, next) => {
     const { bus_date, type } = req.body;
     try{
         const data = await BusInfo.findAll({
@@ -67,7 +66,7 @@ export const adminInquiry = async(req, res, next) => {
 };
 
 //bus Update
-export const adminBusUpdate = async(req, res, next) => {
+export const admBusUpdate = async(req, res, next) => {
     const { bus_time, bus_date, bus_id, type } = req.body;
     try{
         const data = await BusInfo.update(
@@ -91,7 +90,7 @@ export const adminBusUpdate = async(req, res, next) => {
 };
 
 //bus create
-export const adminBusCreate = async(req, res, next) => {
+export const admBusCreate = async(req, res, next) => {
     const { bus_date, bus_stop, bus_time, bus_times, type } = req.body;
     try{
         const data = await BusInfo.create({
@@ -110,7 +109,7 @@ export const adminBusCreate = async(req, res, next) => {
 };
 
 //bus delete
-export const adminBusDelete = async(req, res, next) => {
+export const admBusDelete = async(req, res, next) => {
     const { bus_id } = req.body;
     try{
         const data = await BusInfo.destroy({

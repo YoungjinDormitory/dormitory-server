@@ -1,5 +1,6 @@
 import { Op } from 'sequelize';
-//db
+import Hot from '../models/hot';
+import Bulletin from '../models/bulletin';
 
 //---App---
 //hot Inquiry

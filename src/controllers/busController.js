@@ -1,8 +1,11 @@
-import { col, Op } from 'sequelize';
+import { Op, fn, col } from 'sequelize';
+import StdInfo from '../models/std_info';
+import BusRequest from '../models/bus_request';
+import moment from 'moment';
 
 //---App---
 //bus inquiry
-export const appInquiry = async(req, res, next) => {
+export const busInquiry = async(req, res, next) => {
     try{
         const data = await BusRequest.findAll({
             where: {
@@ -18,7 +21,7 @@ export const appInquiry = async(req, res, next) => {
 };
 
 //bus search
-export const appSearch = async(req, res, next) => {
+export const busSearch = async(req, res, next) => {
     try{
         const data = await BusRequest.findAll({
             where: {
@@ -38,7 +41,7 @@ export const appSearch = async(req, res, next) => {
 };
 
 //bus reservations
-export const appReservations = async(req, res, next) => {
+export const busReservations = async(req, res, next) => {
     const { bus_date, bus_way, bus_stop, bus_time } = req.body;
     try{
         await BusRequest.create({
@@ -57,7 +60,7 @@ export const appReservations = async(req, res, next) => {
 };
 
 //bus revision
-export const appRevision = async(req, res, next) => {
+export const busRevision = async(req, res, next) => {
     const { bus_date, bus_way, bus_stop, bus_time } = req.body;
     try{
         const data = await BusRequest.update(
@@ -82,7 +85,7 @@ export const appRevision = async(req, res, next) => {
 }
 
 //bus delete
-export const appDelete = async(req, res, next) => {
+export const busDelete = async(req, res, next) => {
     try{
         const data = await BusRequest.destory({
             where:{
@@ -99,7 +102,7 @@ export const appDelete = async(req, res, next) => {
 
 //---Web---
 //bus 예약자 inquiry
-export const adminBusHome = async(req, res, next) => {
+export const admBusHome = async(req, res, next) => {
     const { nowPage, stdId, stdName, busStop, date } = req.body;
     try{
         console.log(nowPage);
@@ -139,7 +142,7 @@ export const adminBusHome = async(req, res, next) => {
 };
 
 //bus pageNum
-export const adminPageNum = async(req, res, next) => {
+export const admPageNum = async(req, res, next) => {
     const { nowPage, stdId, stdName, busStop, date } = req.body;
     try{
         let Id = stdId;
@@ -175,7 +178,7 @@ export const adminPageNum = async(req, res, next) => {
 };
 
 //bus inquiry
-export const adminInquiry = async(req, res, next) => {
+export const admInquiry = async(req, res, next) => {
     try{
         const now = new Date();
         now.setMonth(now.getMonth() + 1);

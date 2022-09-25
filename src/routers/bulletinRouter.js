@@ -1,16 +1,16 @@
 import express from 'express';
-import { appClickHot, appCreate, appDelete, appImageInquiry, appInquiry, appInquiryView, appSearch, appUpdate } from '../controllers/bulletinController';
+import {  bulletinClickHot, bulletinCreate, bulletinDelete, bulletinImgInquiry, bulletinInquiry, bulletinInquiryView, bulletinSearch, bulletinUpdate } from '../controllers/bulletinController';
 
 const bulletinRouter = express.Router();
 
 //App
-bulletinRouter.post('/', appInquiry);
-bulletinRouter.post('/image', appImageInquiry);
-bulletinRouter.post('/create', appCreate);
-bulletinRouter.post('/update', appUpdate);
-bulletinRouter.post('/search', appSearch);
-bulletinRouter.post('/clickhot', appClickHot);
-bulletinRouter.post('/watch', appInquiryView);
-bulletinRouter.post('/delete', appDelete);
+bulletinRouter.post('/', bulletinInquiry);
+bulletinRouter.post('/image', bulletinImgInquiry);
+bulletinRouter.post('/create', bulletinCreate);
+bulletinRouter.post('/update', bulletinUpdate);
+bulletinRouter.post('/search', bulletinSearch);
+bulletinRouter.post('/clickhot', bulletinClickHot);
+bulletinRouter.post('/watch', bulletinInquiryView);
+bulletinRouter.post('/delete', bulletinDelete);
 
 export default bulletinRouter;

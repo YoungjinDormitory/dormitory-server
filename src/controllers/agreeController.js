@@ -1,4 +1,4 @@
-//db
+import StdInfo from '../models/std_info';
 
 //권한이 없는 학생 조회
 export const stdInquiry = async(req, res, next) => {

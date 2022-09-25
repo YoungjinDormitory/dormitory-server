@@ -1,6 +1,10 @@
 import passport from 'passport';
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
+import StdInfo from '../models/std_info';
+import AdmInfo from '../models/adm_info';
+import StdWait from '../models/std_wait';
+
 
 const transporter = nodemailer.createTransport({
     service:'naver',
@@ -10,7 +14,29 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-//hash, passport 설정해야함 아직x
+export const startLogin = async(req, res) => {
+    const tokenRequest = await(
+        await fetch('',{//url?
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+            }
+        })
+    ).json();
+    if('access_token' in tokenRequest){
+        const {access_token} = tokenRequest;
+        const userRequest = await(
+            await fetch('url', {
+                headers: {
+                    Authorization: `token${access_token}`,
+                },
+            })
+        ).json();
+        console.log(userRequest);
+    }else{
+        return res.redirect('/');
+    }
+}
 
 //---App---
 //App login

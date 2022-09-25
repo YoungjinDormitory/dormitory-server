@@ -13,6 +13,8 @@ import hotRouter from './routers/hotRouter';
 import bulletinRouter from './routers/bulletinRouter';
 import commentRouter from './routers/commentRouter';
 import menuRouter from './routers/menuRouter';
+import jwt from 'jsonwebtoken';
+import { localsMiddleware } from './middlewares';
 
 const app = express();
 const logger = morgan('dev');
@@ -34,9 +36,35 @@ app.use(
         }),
     })
 );
+//post /login 요청
+// app.post('/login/user ', (req, res, next) => {
+//     const key = process.env.SECRET_KEY; //로그인 정보
+//     const nickname = 'hello';
+//     const profile = 'images';
+//     let token = '';
+//     token = jwt.sign(
+//         {
+//             type: 'JWT',
+//             nickname,
+//             profile,
+//         },
+//         key,
+//         {
+//             expiresIn: '20m', //20분후 만료
+//             issuer: '토큰 발급',
+//         }
+//     );
+
+//     return res.status(200).json({
+//         code: 200,
+//         message: 'token is Created',
+//         token,
+//     });
+// });
 
 app.use(logger);
 
+app.use(localsMiddleware);
 app.use('/', rootRouter);
 app.use('/bus', busRouter);
 app.use('/businfo', busInfoRouter);

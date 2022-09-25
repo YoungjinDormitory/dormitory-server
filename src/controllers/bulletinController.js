@@ -1,9 +1,13 @@
 import { Op } from 'sequelize';
-//db
+import Comment from '../models/comment';
+import Bulletin from '../models/bulletin';
+import ImageArr from '../models/image_arr';
+import Hot from '../models/hot';
+import Like from '../models/like';
 
 //---App---
 //Bulletin Inquiry
-export const appInquiry = async(req, res) => {
+export const bulletinInquiry = async(req, res) => {
     try{
         const data = await Bulletin.findAll({
             order: [['bulletin_id', 'DESC']],
@@ -17,7 +21,7 @@ export const appInquiry = async(req, res) => {
 };
 
 //Bulletin Image Inquiry
-export const appImageInquiry = async(req, res) => {
+export const bulletinImgInquiry = async(req, res) => {
     try{
         const data = await ImageArr.findAll({
             where: {
@@ -33,7 +37,7 @@ export const appImageInquiry = async(req, res) => {
 };
 
 //Bulletin Create
-export const appCreate = async(req, res, next) => {
+export const bulletinCreate = async(req, res, next) => {
     const { title, content, images } = req.body;
     try{
         const data = await Bulletin.create({
@@ -59,7 +63,7 @@ export const appCreate = async(req, res, next) => {
 };
 
 //Bulletin Update
-export const appUpdate = async(req, res, next) => {
+export const bulletinUpdate = async(req, res, next) => {
     const { title, content, id, images } = req.body;
     try{
         await Bulletin.update(
@@ -102,7 +106,7 @@ export const appUpdate = async(req, res, next) => {
 };
 
 //Bulletin Search
-export const appSearch = async(req, res, next) => {
+export const bulletinSearch = async(req, res, next) => {
     const { title } = req.body;
     try{
         const data = await Bulletin.findAll({
@@ -121,7 +125,7 @@ export const appSearch = async(req, res, next) => {
 };
 
 //hot Btn Click
-export const appClickHot = async(req, res) => {
+export const bulletinClickHot = async(req, res) => {
     const { id } = req.body;
     try{
         const data = await Like.findOne({
@@ -155,7 +159,7 @@ export const appClickHot = async(req, res) => {
 };
 
 //Bulletin Inquiry View
-export const appInquiryView = async(req, res) => {
+export const bulletinInquiryView = async(req, res) => {
     try{
         await Bulletin.increment(
             { views: 1 },
@@ -169,7 +173,7 @@ export const appInquiryView = async(req, res) => {
 };
 
 //Bulletin Delete
-export const appDelete = async(req, res, next) => {
+export const bulletinDelete = async(req, res, next) => {
     const { bulletin_id } = req.body;
     try{
         await Bulletin.destory({
