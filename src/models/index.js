@@ -1,4 +1,4 @@
-import Sequelize from "sequelize";
+import {Sequelize} from "sequelize";
 
 import AsRequest from './as_request';
 import HlthRequest from './hlth_request';
@@ -22,7 +22,7 @@ const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.json')[env];
 const db = {};
 
-export const sequelize = new Sequelize(
+const sequelize = new Sequelize(
   config.database,
   config.username,
   config.password,
@@ -68,7 +68,9 @@ AsRequest.associate(db);
 AdmInfo.associate(db);
 BusInfo.associate(db);
 BusRequest.associate(db);
-Bulletin.associate(db);
+
+// Bulletin.associate(db);
+
 Comment.associate(db);
 MenuList.associate(db);
 Holiday.associate(db);

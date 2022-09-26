@@ -9,7 +9,7 @@ rootRouter.post('/login', login);
 rootRouter.post('/logout', logout);
 rootRouter.post('/find/pw', findPw);
 rootRouter.post('/change/pw', changePw);
-rootRouter.get('/login/user', startLogin);
+// rootRouter.get('/login/user', startLogin);
 
 //Web 
 rootRouter.post('/admin/login', adminLogin);

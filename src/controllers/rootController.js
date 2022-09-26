@@ -4,7 +4,9 @@ import crypto from 'crypto';
 import StdInfo from '../models/std_info';
 import AdmInfo from '../models/adm_info';
 import StdWait from '../models/std_wait';
-
+import createToken from '../util/jwt/createToken';
+import createHash from '../util/hash/createHash';
+import verifyToken from '../util/jwt/verifyToken';
 
 const transporter = nodemailer.createTransport({
     service:'naver',
@@ -14,50 +16,53 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-export const startLogin = async(req, res) => {
-    const tokenRequest = await(
-        await fetch('',{//url?
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
+//---App---
+//App login
+export const restoreAccessToken = async(req, res, next) => {
+    const {refreshToken} = req.header.cookies; 
+    const refresh = verifyToken(refreshToken);
+    try{
+        const find = await StdInfo.findOne({
+            where: {
+                refreshToken : refresh.hash
             }
-        })
-    ).json();
-    if('access_token' in tokenRequest){
-        const {access_token} = tokenRequest;
-        const userRequest = await(
-            await fetch('url', {
-                headers: {
-                    Authorization: `token${access_token}`,
-                },
-            })
-        ).json();
-        console.log(userRequest);
-    }else{
-        return res.redirect('/');
+        });
+        if(find){
+        const {std_id, std_name} =find;
+        const userObj = {std_id, std_name}
+        const accessToken = createToken(userObj,"10s")
+        return res.json({accessToken})
+        }
+        return res.status(400).send("USER IS NOT FOUND")
+    }catch(err){
+        next(err)
     }
 }
 
-//---App---
-//App login
-export const login = async(req, res, next) => {
-    passport.authenticate('local:user', (err, user, info) => {
-        if(err){
-            console.error(err);
-            return next(err);
-        }else if(info){
-            return next(info);
-        }
-        return req.login(user, (loginErr) => {
-            if(loginErr) {
-                return next(loginErr);
-            }
-            const filteredUser = Object.assign({}, user);
-            delete filteredUser.password;
 
-            return res.json(filteredUser);
+export const login = async(req, res, next) => {
+    const { std_id, password} = req.body;
+    try{
+        const asdasd = await StdInfo.findOne({
+            where:{
+            std_id,
+            password,}
         });
-    })(res, req, next);
+        const userObj = {name: asdasd.std_name, std_id };
+        if(asdasd){
+            const accessToken = createToken(userObj, '10s');
+            const hash = createHash(userObj)
+            const refreshToken = createToken({hash }, '1y');
+            res.cookie('refreshToken', refreshToken,
+            {
+                maxAge: 3.154e10,
+                httpOnly: true,
+            })
+            return res.json({accessToken});
+        }
+    }catch(err){
+        console.log(err);
+    }
 };
 
 //App logout
@@ -117,24 +122,26 @@ export const changePw = async(req, res, next) => {
 
 //App Signup
 export const signUp = async(req, res, next) => {
+    console.log('000');
     const { std_id, std_name, password, ph_num, room_num, e_mail } = req.body;
     try{
         const hash = crypto.randomBytes(10).toString('hex');
-        const mailOptions = {
-            from: '',//email
-            to: e_mail,
-            subject: 'hello',
-            text: 'Authification http://localhost:3001/auth/' + hash,
-        };
-        transporter.sendMail(mailOptions, function (error, info){
-            if(error){
-                console.log(error);
-            }else {
-                console.log('Email sent: ' + info.response);
-                console.log(info.response);
-            }
-        });
-        await StdWait.create({
+        // // const mailOptions = {
+        // //     from: 'vnfmsqkekrn@gmail.com',
+        // //     to: e_mail,
+        // //     subject: 'hello',
+        // //     text: 'Authification http://localhost:8000/auth/' + hash,
+        // // };
+        // transporter.sendMail(mailOptions, function (error, info){
+        //     if(error){
+        //         console.log(error);
+        //     }else {
+        //         console.log('Email sent: ' + info.response);
+        //         console.log(info.response);
+        //     }
+        // });
+        console.log('1111');
+        await StdInfo.create({
             std_id,
             std_name,
             password,
@@ -143,7 +150,7 @@ export const signUp = async(req, res, next) => {
             e_mail,
             hash: hash,
         });
-
+        console.log('22222');
         return res.status(200).send('Success');
     }catch (err) {
         console.error(err);
