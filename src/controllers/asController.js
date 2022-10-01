@@ -94,7 +94,7 @@ export const asUpdate = async(req, res, next) => {
 //As delete
 export const asDelete = async(req, res, next) => {
     try{
-        const data = await AsRequest.destory({
+        const data = await AsRequest.destroy({
             where: {
                 as_id: req.body.as_id,
             },

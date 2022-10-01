@@ -1,10 +1,10 @@
 {
   "development": {
-    "username": "root",
-    "password": "llijkms4114!!",
-    "database": "dormitory",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "username": "",
+    "password": "",
+    "database": "",
+    "host": "",
+    "dialect": ""
   },
   "test": {
     "username": "",

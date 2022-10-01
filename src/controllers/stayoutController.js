@@ -63,7 +63,7 @@ export const stayoutDelete = async(req, res, next) => {
     const { stayout_id } = req.body;
     try{
         console.log(req.body);
-        const data = await StayoutRequest.destory({
+        const data = await StayoutRequest.destroy({
             where: {
                 stayout_id,
             },

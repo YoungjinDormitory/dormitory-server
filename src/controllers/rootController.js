@@ -80,7 +80,7 @@ export const logout = async(req,res,next) => {
             next(err);
         }
     });
-    req.session.destory();
+    req.session.destroy();
     return res.status(200).send('Success');
 };
 

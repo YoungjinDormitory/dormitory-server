@@ -78,7 +78,7 @@ export const bulletinUpdate = async(req, res, next) => {
                 },
             }
         );
-        await ImageArr.destory({
+        await ImageArr.destroy({
             where: {
                 bulletin_id: id,
             },
@@ -176,12 +176,12 @@ export const bulletinInquiryView = async(req, res) => {
 export const bulletinDelete = async(req, res, next) => {
     const { bulletin_id } = req.body;
     try{
-        await Bulletin.destory({
+        await Bulletin.destroy({
             where: {
                 bulletin_id,
             },
         });
-        await Comment.destory({
+        await Comment.destroy({
             where: {
                 bulletin_id,
             },

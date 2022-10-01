@@ -87,7 +87,7 @@ export const busUpdate = async(req, res, next) => {
 //bus delete
 export const busDelete = async(req, res, next) => {
     try{
-        const data = await BusRequest.destory({
+        const data = await BusRequest.destroy({
             where:{
                 bus_req_id: req.body.bus_req_id,
             },
