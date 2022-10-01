@@ -29,7 +29,11 @@ module.exports = class Comment extends Sequelize.Model{
                 group_id: {
                     type: Sequelize.INTEGER,
                     allowNull: false,
-                }
+                },
+                ip: {
+                    type: Sequelize.STRING(10),
+                    allowNull: false,
+                },
             },
             {
                 sequelize,
