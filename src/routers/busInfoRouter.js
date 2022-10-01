@@ -1,15 +1,15 @@
 import express from 'express';
-import { admBusCreate, admBusDelete, admBusInquiry, admBusUpdate, appBusInfo, appBusStop, appBusTime } from '../controllers/busInfoController';
+import { admBusCreate, admBusDelete, admBusInquiry, admBusUpdate, busInfo, busStop, busTime } from '../controllers/busInfoController';
 
 const busInfoRouter = express.Router();
 
 //App
-busInfoRouter.post('/', appBusInfo);
-busInfoRouter.post('/busstop', appBusStop);
-busInfoRouter.post('/bustime', appBusTime);
+busInfoRouter.get('/', busInfo);
+busInfoRouter.get('/busstop', busStop);
+busInfoRouter.post('/bustime', busTime);
 
 //Web
-busInfoRouter.route('/admin').post(admBusInquiry).patch(admBusUpdate).delete(admBusDelete);
+busInfoRouter.route('/admin').get(admBusInquiry).post(admBusUpdate).post(admBusDelete);
 busInfoRouter.post('/admin/create', admBusCreate);
 
 export default busInfoRouter;

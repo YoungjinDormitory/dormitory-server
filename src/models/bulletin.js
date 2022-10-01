@@ -45,7 +45,7 @@ module.exports = class Bulletin extends Sequelize.Model{
             }
         );
     }
-    static associae(db){
+    static associate(db){
         db.Bulletin.belongsTo(db.StdInfo, {
             foreignKey: 'std_id',
             sourceKey: 'std_id',

@@ -6,7 +6,7 @@ import moment from 'moment';
 
 //---App---
 //As Inquiry
-export const appInquiry = async(req, res, next) => {
+export const asInquiry = async(req, res, next) => {
     try{
         const data = await AsRequest.findAll({
             where: { std_id: req.user.id },
@@ -21,7 +21,7 @@ export const appInquiry = async(req, res, next) => {
 };
 
 //As search
-export const appSearch = async(req, res, next) => {
+export const asSearch = async(req, res, next) => {
     const { startDate, endDate } = req.body;
     try{
         const data = await AsRequest.findAll({
@@ -47,7 +47,7 @@ export const appSearch = async(req, res, next) => {
 };
 
 //As create
-export const appCreate = async(req, res, next) => {
+export const asCreate = async(req, res, next) => {
     const { title, content, vst_check } = req.body;
     try{
         await AsRequest.create({
@@ -66,7 +66,7 @@ export const appCreate = async(req, res, next) => {
 };
 
 //As update
-export const appUpdate = async(req, res, next) => {
+export const asUpdate = async(req, res, next) => {
     const { title, content, vst_check, as_id } = req.body;
     try{
         await AsRequest.update(
@@ -92,7 +92,7 @@ export const appUpdate = async(req, res, next) => {
 };
 
 //As delete
-export const appDelete = async(req, res, next) => {
+export const asDelete = async(req, res, next) => {
     try{
         const data = await AsRequest.destory({
             where: {
@@ -109,7 +109,7 @@ export const appDelete = async(req, res, next) => {
 
 //---Web---
 //As Inquiry
-export const adminInquiry = async(req, res, next) => {
+export const admAsInquiry = async(req, res, next) => {
     const { std_id, std_name, start_date, end_date, nowPage } = req.body;
     try{
         let Id = std_id;
@@ -150,7 +150,7 @@ export const adminInquiry = async(req, res, next) => {
 };
 
 //As Checked
-export const adminChecked = async(req, res, next) => {
+export const admAsChecked = async(req, res, next) => {
     try{
         let Id = req.body.id;
         await AsRequest.update(
@@ -168,7 +168,7 @@ export const adminChecked = async(req, res, next) => {
 };
 
 //As Pagenum
-export const adminPageNum = async(req, res, next) => {
+export const admAsPageNum = async(req, res, next) => {
     const { std_id, std_name, start_date, end_date } = req.body;
     try{
         let Id = std_id;

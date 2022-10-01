@@ -19,40 +19,48 @@ const transporter = nodemailer.createTransport({
 //---App---
 //App login
 export const restoreAccessToken = async(req, res, next) => {
-    const {refreshToken} = req.header.cookies; 
+    const {refreshToken} = req.cookies; 
     const refresh = verifyToken(refreshToken);
     try{
         const find = await StdInfo.findOne({
             where: {
-                refreshToken : refresh.hash
+                refresh_token : refresh.hash
             }
         });
         if(find){
-        const {std_id, std_name} =find;
-        const userObj = {std_id, std_name}
-        const accessToken = createToken(userObj,"10s")
-        return res.json({accessToken})
+            const { std_id, std_name } = find;
+            const userObj = { std_id, std_name };
+            const accessToken = createToken(userObj,"10s")
+            return res.json({ accessToken });
         }
         return res.status(400).send("USER IS NOT FOUND")
     }catch(err){
-        next(err)
+        next(err);
     }
 }
 
+export const user = async(req, res, next) => {
+    if(req.user) {
+        return res.json(req.user);
+    }else {
+        return res.status(404).send('YOU ARE GUEST');
+    }
+};
 
 export const login = async(req, res, next) => {
-    const { std_id, password} = req.body;
+    const { std_id, password } = req.body;
     try{
-        const asdasd = await StdInfo.findOne({
-            where:{
-            std_id,
-            password,}
+        const userInfo = await StdInfo.findOne({
+            where: {
+                std_id,
+                password,
+            },
         });
-        const userObj = {name: asdasd.std_name, std_id };
-        if(asdasd){
+        const userObj = { std_name: userInfo.std_name, std_id };
+        if(userInfo){
             const accessToken = createToken(userObj, '10s');
-            const hash = createHash(userObj)
-            const refreshToken = createToken({hash }, '1y');
+            const hash = await createHash(userObj)
+            const refreshToken = createToken({ hash }, '1y');
             res.cookie('refreshToken', refreshToken,
             {
                 maxAge: 3.154e10,
@@ -73,7 +81,6 @@ export const logout = async(req,res,next) => {
         }
     });
     req.session.destory();
-
     return res.status(200).send('Success');
 };
 
@@ -94,7 +101,7 @@ export const findPw = async(req, res, next) => {
             }
         })
         return res.status(200).send('Success');
-    } catch(err){
+    }catch(err){
         console.error(err);
         next(err);
     }
@@ -114,7 +121,7 @@ export const changePw = async(req, res, next) => {
             }
         )
         return res.status(200).send('Success');
-    } catch(err){
+    }catch(err){
         console.error(err);
         next(err);
     }
@@ -122,7 +129,6 @@ export const changePw = async(req, res, next) => {
 
 //App Signup
 export const signUp = async(req, res, next) => {
-    console.log('000');
     const { std_id, std_name, password, ph_num, room_num, e_mail } = req.body;
     try{
         const hash = crypto.randomBytes(10).toString('hex');
@@ -140,7 +146,6 @@ export const signUp = async(req, res, next) => {
         //         console.log(info.response);
         //     }
         // });
-        console.log('1111');
         await StdInfo.create({
             std_id,
             std_name,
@@ -150,9 +155,8 @@ export const signUp = async(req, res, next) => {
             e_mail,
             hash: hash,
         });
-        console.log('22222');
         return res.status(200).send('Success');
-    }catch (err) {
+    }catch(err) {
         console.error(err);
         next(err);
     }

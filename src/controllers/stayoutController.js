@@ -5,7 +5,7 @@ import moment from 'moment';
 
 //---App---
 //Stayout Inquiry
-export const appInquiry = async(req, res, next) => {
+export const stayoutInquiry = async(req, res, next) => {
     try{
         const data = await StayoutRequest.findAll({
             where: { std_id: req.user.id },
@@ -19,31 +19,8 @@ export const appInquiry = async(req, res, next) => {
     }
 };
 
-//Stayout Search
-export const appSearch = async(req, res, next) => {
-    const { startDate } = req.body;
-    try{
-        console.log(req.body);
-        const data = await StayoutRequest.findAll({
-            where: {
-                std_id: req.user.id,
-                [Op.and]: [
-                    {start_date: {[Op.lte]: moment(startDate)}},
-                    {end_date: {[Op.gte]: moment(startDate)}},
-                ],
-            },
-            order: [['stayout_id', 'DESC']],
-        });
-
-        return res.status(200).json(data);
-    }catch (err) {
-        console.error(err);
-        next(err);
-    }
-};
-
 //Stayout Create
-export const appCreate = async(req, res, next) => {
+export const stayoutCreate = async(req, res, next) => {
     const { start_date, end_date } = req.body;
     try{
         await StayoutRequest.create({
@@ -60,27 +37,29 @@ export const appCreate = async(req, res, next) => {
 };
 
 //Stayout Update
-export const appUpdate = async(req, res, next) => {
-    const { start_date, end_date, std_id, stayout_id } = req.body;
+export const stayoutUpdate = async(req, res, next) => {
+    const { start_date, end_date, stayout_id } = req.body;
     try{
         const data = await StayoutRequest.update({
             start_date,
             end_date,
+        },
+        {
             where: {
-                std_id,
+                std_id: req.user.std_id,
                 stayout_id,
             },
         });
 
         return res.status(200).json(data);
-    }catch (err) {
+    } catch (err) {
         console.error(err);
         next(err);
     }
 };
 
 //Stayout Delete
-export const appDelete = async(req, res, next) => {
+export const stayoutDelete = async(req, res, next) => {
     const { stayout_id } = req.body;
     try{
         console.log(req.body);
@@ -99,7 +78,7 @@ export const appDelete = async(req, res, next) => {
 
 //---Web---
 //Stayout Inquiry
-export const adminInquiry = async(req, res, next) => {
+export const admStayoutInquiry = async(req, res, next) => {
     const { std_id, std_name, nowPage } = req.body;
     try{
         let Id = std_id;
@@ -133,7 +112,7 @@ export const adminInquiry = async(req, res, next) => {
 };
 
 //Stayout PageNum
-export const adminPageNum = async(req, res, next) => {
+export const admStayoutPageNum = async(req, res, next) => {
     const { std_id, std_name } = req.body;
     try{
         let Id = std_id;
@@ -160,7 +139,7 @@ export const adminPageNum = async(req, res, next) => {
 };
 
 //Stayout People Date
-export const adminPeopleDate = async(req, res, next) => {
+export const admStayoutDate = async(req, res, next) => {
     try{
         const dataArr = [];
         const now = new Date();

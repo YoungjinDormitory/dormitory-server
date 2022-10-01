@@ -1,16 +1,16 @@
 import express from 'express';
-import { adminInquiry, adminPageNum, appCreate, appDelete, appInquiry, appSearch } from '../controllers/hlthController';
+import { admHlthInquiry, admHlthPageNum, hlthCreate, hlthDelete, hlthInquiry, hlthSearch } from '../controllers/hlthController';
 
 const hlthRouter = express.Router();
 
 //App
-hlthRouter.post('/', appInquiry);
-hlthRouter.post('/search', appSearch);
-hlthRouter.post('/create', appCreate);
-hlthRouter.delete('/delete', appDelete);
+hlthRouter.get('/', hlthInquiry);
+hlthRouter.post('/search', hlthSearch);
+hlthRouter.post('/create', hlthCreate);
+hlthRouter.post('/delete', hlthDelete);
 
 //Web
-hlthRouter.post('/admin', adminInquiry);
-hlthRouter.post('/admin/pagenum', adminPageNum);
+hlthRouter.get('/admin', admHlthInquiry);
+hlthRouter.post('/admin/pagenum', admHlthPageNum);
 
 export default hlthRouter;

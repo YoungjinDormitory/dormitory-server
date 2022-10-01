@@ -1,4 +1,4 @@
-import {Sequelize} from "sequelize";
+import { Sequelize } from "sequelize";
 
 import AsRequest from './as_request';
 import HlthRequest from './hlth_request';
@@ -68,9 +68,7 @@ AsRequest.associate(db);
 AdmInfo.associate(db);
 BusInfo.associate(db);
 BusRequest.associate(db);
-
-// Bulletin.associate(db);
-
+Bulletin.associate(db);
 Comment.associate(db);
 MenuList.associate(db);
 Holiday.associate(db);

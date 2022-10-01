@@ -41,7 +41,7 @@ export const busSearch = async(req, res, next) => {
 };
 
 //bus reservations
-export const busReservations = async(req, res, next) => {
+export const busCreate = async(req, res, next) => {
     const { bus_date, bus_way, bus_stop, bus_time } = req.body;
     try{
         await BusRequest.create({
@@ -60,7 +60,7 @@ export const busReservations = async(req, res, next) => {
 };
 
 //bus revision
-export const busRevision = async(req, res, next) => {
+export const busUpdate = async(req, res, next) => {
     const { bus_date, bus_way, bus_stop, bus_time } = req.body;
     try{
         const data = await BusRequest.update(
@@ -142,7 +142,7 @@ export const admBusHome = async(req, res, next) => {
 };
 
 //bus pageNum
-export const admPageNum = async(req, res, next) => {
+export const admBusPageNum = async(req, res, next) => {
     const { nowPage, stdId, stdName, busStop, date } = req.body;
     try{
         let Id = stdId;
@@ -178,7 +178,7 @@ export const admPageNum = async(req, res, next) => {
 };
 
 //bus inquiry
-export const admInquiry = async(req, res, next) => {
+export const admBusInquiry = async(req, res, next) => {
     try{
         const now = new Date();
         now.setMonth(now.getMonth() + 1);

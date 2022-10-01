@@ -9,11 +9,11 @@ bulletinRouter.post('/search', bulletinSearch);
 
 //App
 bulletinRouter.use(deserializeUser)
-bulletinRouter.post('/image', bulletinImgInquiry);
-bulletinRouter.post('/create', bulletinCreate);
+bulletinRouter.get('/image', bulletinImgInquiry);
+bulletinRouter.get('/watch', bulletinInquiryView);
 bulletinRouter.post('/update', bulletinUpdate);
+bulletinRouter.post('/create', bulletinCreate);
 bulletinRouter.post('/clickhot', bulletinClickHot);
-bulletinRouter.post('/watch', bulletinInquiryView);
 bulletinRouter.post('/delete', bulletinDelete);
 
 

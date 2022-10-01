@@ -1,18 +1,18 @@
 import express from 'express';
-import { adminChecked, adminInquiry, adminPageNum, appCreate, appDelete, appInquiry, appSearch, appUpdate } from '../controllers/asController';
+import { admAsChecked, admAsInquiry, admAsPageNum, asCreate, asDelete, asInquiry, asSearch, asUpdate } from '../controllers/asController';
 
 const asRouter = express.Router();
 
 //App
-asRouter.post('/', appInquiry);
-asRouter.post('/search', appSearch);
-asRouter.post('/create', appCreate);
-asRouter.patch('/update', appUpdate);
-asRouter.delete('/delete', appDelete);
+asRouter.get('/', asInquiry);
+asRouter.get('/update', asUpdate);
+asRouter.post('/search', asSearch);
+asRouter.post('/create', asCreate);
+asRouter.post('/delete', asDelete);
 
 //Web
-asRouter.post('/admin/inquiry', adminInquiry);
-asRouter.patch('/admin/checked', adminChecked);
-asRouter.post('/admin/pagenum', adminPageNum);
+asRouter.get('/admin/inquiry', admAsInquiry);
+asRouter.post('/admin/checked', admAsChecked);
+asRouter.post('/admin/pagenum', admAsPageNum);
 
 export default asRouter;

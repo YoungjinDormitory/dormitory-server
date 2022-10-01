@@ -4,7 +4,7 @@ import BusInfo from '../models/bus_info';
 
 //---App---
 //bus Inquiry
-export const appBusInfo = async(req, res, next) => {
+export const busInfo = async(req, res, next) => {
     try{
         const data = await BusInfo.findAll();
         res.json(data);
@@ -15,7 +15,7 @@ export const appBusInfo = async(req, res, next) => {
 };
 
 //bus Stop
-export const appBusStop = async(req, res, next) => {
+export const busStop = async(req, res, next) => {
     const { type, bus_date } = req.body;
     try{
         const data = await BusInfo.findAll({
@@ -32,7 +32,7 @@ export const appBusStop = async(req, res, next) => {
 };
 
 //bus Time
-export const appBusTime = async(req, res, next) => {
+export const busTime = async(req, res, next) => {
     const { type, bus_date, bus_stop } = req.body;
     try{
         const data = await BusInfo.findAll({

@@ -5,22 +5,37 @@ import moment from 'moment';
 
 //---App---
 //Hlth Inquiry
-export const appInquiry = async(req, res, next) => {
-    try{
-        const data = await HlthRequest.findAll({
-            where: { std_id: req.user.id },
-            order: [['hlth_id', 'DESC']],
-        });
-        
-        return res.status(200).json(data);
-    }catch (err) {
-        console.error(err);
-        next(err);
+export const hlthInquiry = async (req, res, next) => {
+    const { start_date, end_date, limit } = req.query;
+    const option = start_date &&
+      end_date && [
+        {
+          date: {
+            [Op.gte]: moment(start_date).toISOString(),
+          },
+        },
+        { date: { [Op.lte]: moment(end_date).toISOString() } },
+      ];
+  
+    try {
+      const data = await HlthRequest.findAll({
+        where: {
+          std_id: req.user.std_id,
+          [Op.and]: option ? option : [],
+        },
+        order: [["hlth_id", "DESC"]],
+        limit: limit ? Number(limit) : 10,
+      });
+  
+      return res.status(200).json(data);
+    } catch (err) {
+      console.error(err);
+      next(err);
     }
-};
+  };
 
 //Hlth Search
-export const appSearch = async(req, res, next) => {
+export const hlthSearch = async(req, res, next) => {
     const { startDate, endDate } = req.body;
     try{
         const data = await HlthRequest.findAll({
@@ -42,14 +57,14 @@ export const appSearch = async(req, res, next) => {
 };
 
 //Hlth Create
-export const appCreate = async(req, res, next) => {
+export const hlthCreate = async(req, res, next) => {
     const { date, start_time, end_time } = req.body;
     try{
         await HlthRequest.create({
             date,
             start_time,
             end_time,
-            std_id: req.user.id,
+            std_id: req.user.std_id,
         });
 
         return res.status(200).send('Success');
@@ -60,13 +75,14 @@ export const appCreate = async(req, res, next) => {
 };
 
 //Hlth Delete
-export const appDelete = async(req, res, next) => {
+export const hlthDelete = async(req, res, next) => {
     try{
-        const data = await HlthRequest.destory({
+        const data = await HlthRequest.destroy({
             where: {
-                hlth_id: req.body.hlth_id,
+              hlth_id: req.body.hlth_id,
+              std_id: req.user.std_id,
             },
-        });
+          });
 
         return res.status(200).json(data);
     }catch (err) {
@@ -77,7 +93,7 @@ export const appDelete = async(req, res, next) => {
 
 //---Web---
 //Hlth Inquiry 헬스 예약자 조회
-export const adminInquiry = async(req, res, next) => {
+export const admHlthInquiry = async(req, res, next) => {
     const { stdId, stdName, startDate, endDate, nowPage } = req.body;
     try{
         let Id = stdId;
@@ -118,7 +134,7 @@ export const adminInquiry = async(req, res, next) => {
 };
 
 //Hlth Pagenum
-export const adminPageNum = async(req, res, next) => {
+export const admHlthPageNum = async(req, res, next) => {
     const { stdId, stdName, startDate, endDate } = req.body;
     try{
         let Id = stdId;

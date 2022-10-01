@@ -28,7 +28,7 @@ export const  stdAgree = async(req, res, next) => {
                 where: { std_id: checkedStd }
             }
         );
-        return res.status(200).json(200);
+        return res.status(200).json(data);
     }catch (err) {
         console.error(err);
         next(err);

@@ -1,11 +1,11 @@
 import express from 'express';
-import { appCreate, appDelete, appInquiry } from '../controllers/commentController';
+import {  commentCreate, commentDelete, commentInquiry } from '../controllers/commentController';
 
 const commentRouter = express.Router();
 
 //App
-commentRouter.post('/', appInquiry);
-commentRouter.post('/create', appCreate);
-commentRouter.delete('/delete', appDelete);
+commentRouter.get('/', commentInquiry);
+commentRouter.post('/create', commentCreate);
+commentRouter.post('/delete', commentDelete);
 
 export default commentRouter;

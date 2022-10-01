@@ -4,7 +4,7 @@ import Bulletin from '../models/bulletin';
 
 //---App---
 //hot Inquiry
-export const appInquire = async(req, res) => {
+export const hotInquire = async(req, res) => {
     try{
         const data = await Hot.findAll({
             include: [

@@ -2,7 +2,7 @@ import Comment from '../models/comment';
 
 //---App---
 //Comment Inquiry
-export const appInquiry = async(req, res) => {
+export const commentInquiry = async(req, res) => {
     const { bullentin_id } = req.body;
     try{
         const data = await Comment.findAndCountAll({
@@ -17,7 +17,7 @@ export const appInquiry = async(req, res) => {
 };
 
 //Comment create
-export const appCreate = async(req, res) => {
+export const commentCreate = async(req, res) => {
     const { content, bullentin_id } = req.body;
     if(!req.user){
         return;
@@ -36,7 +36,7 @@ export const appCreate = async(req, res) => {
 };
 
 //Comment Delete
-export const appDelete = async(req, res, next) => {
+export const commentDelete = async(req, res, next) => {
     const { comment_id } = req.body;
     try{
         await Comment.destroy({

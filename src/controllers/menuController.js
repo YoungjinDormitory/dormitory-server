@@ -5,7 +5,7 @@ import MenuList from '../models/menu_list';
 
 //---App---
 //Menu 출력?
-export const appMenu = async(req, res, next) => {
+export const menu = async(req, res, next) => {
     try{
         const startNow = new Date();
         const endNow = new Date();
@@ -53,7 +53,7 @@ export const menuExist = async(req, res, next) => {
 
 //---Web---
 //Menu Inquiry
-export const menuInquiry = async(req, res, next) => {
+export const admMenuInquiry = async(req, res, next) => {
     const { startDate, endDate, nowPage } = req.body;
     try{
         let StartDate = startDate;
@@ -79,7 +79,7 @@ export const menuInquiry = async(req, res, next) => {
 };
 
 //Menu PageNum
-export const menuPageNum = async(req, res, next) => {
+export const admMenuPageNum = async(req, res, next) => {
     const { startDate, endDate } = req.body;
     try{
         let StartDate = startDate;
@@ -102,7 +102,7 @@ export const menuPageNum = async(req, res, next) => {
 };
 
 //Menu Update
-export const menuUpdate = async(req, res, next) => {
+export const admMenuUpdate = async(req, res, next) => {
     const { breakfast, lunch, dinner, date } = req.body;
     try{
         const data = await MenuList.update(
@@ -126,7 +126,7 @@ export const menuUpdate = async(req, res, next) => {
 };
 
 //Menu create
-export const MenuCreate = async(req, res, next) => {
+export const admMenuCreate = async(req, res, next) => {
     const { date, breakfast, lunch, dinner } = req.body;
     try{
         const data = await MenuList.create({
@@ -144,7 +144,7 @@ export const MenuCreate = async(req, res, next) => {
 };
 
 //Menu Delete
-export const MenuDelete = async(req, res, next) => {
+export const admMenuDelete = async(req, res, next) => {
     const { date } = req.body;
     try{
         const data = await MenuList.destroy({

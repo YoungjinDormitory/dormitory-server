@@ -1,18 +1,18 @@
 import express from 'express';
-import { adminInquiry, adminPageNum, adminPeopleDate, appCreate, appDelete, appInquiry, appSearch, appUpdate } from '../controllers/stayoutController';
+import { admStayoutDate, admStayoutInquiry, admStayoutPageNum, stayoutCreate, stayoutDelete, stayoutInquiry, stayoutSearch, stayoutUpdate } from '../controllers/stayoutController';
 
 const stayoutRouter = express.Router();
 
 //App
-stayoutRouter.post('/', appInquiry);
-stayoutRouter.post('/search', appSearch);
-stayoutRouter.post('/create', appCreate);
-stayoutRouter.patch('/update', appUpdate);
-stayoutRouter.delete('/delete', appDelete);
+stayoutRouter.get('/', stayoutInquiry);
+stayoutRouter.get('/update', stayoutUpdate);
+stayoutRouter.post('/search', stayoutSearch);
+stayoutRouter.post('/create', stayoutCreate);
+stayoutRouter.post('/delete', stayoutDelete);
 
 //Web
-stayoutRouter.post('/admin', adminInquiry);
-stayoutRouter.post('/admin/pagenum', adminPageNum);
-stayoutRouter.post('/admin/people/date', adminPeopleDate);
+stayoutRouter.get('/admin', admStayoutInquiry);
+stayoutRouter.post('/admin/pagenum', admStayoutPageNum);
+stayoutRouter.post('/admin/people/date', admStayoutDate);
 
 export default stayoutRouter;

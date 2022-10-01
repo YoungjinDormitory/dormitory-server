@@ -4,7 +4,7 @@ import { holidayCreate, holidayDelete, holidayInquiry } from '../controllers/hol
 const holidayRouter = express.Router();
 
 //Web
-holidayRouter.route('/').post(holidayInquiry).delete(holidayDelete);
+holidayRouter.route('/').get(holidayInquiry).post(holidayDelete);
 holidayRouter.post('/create', holidayCreate);
 
 export default holidayRouter;
