@@ -18,15 +18,15 @@ module.exports = class Hot extends Sequelize.Model {
                 modelName: 'Hot',
                 tableName: 'hot',
                 paranoid: false,
-                charset: 'utf8mb4',
-                collate: 'utf8mb4_general_ci',
+                charset: 'utf8',
+                collate: 'utf8_unicode_ci',
             }
         );
     }
     static associate(db) {
         db.Hot.belongsTo(db.Bulletin, {
             foreignKey: 'bulletin_id',
-            sourceKey: 'bulletin_id',
+            targetKey: 'bulletin_id',
         });
     }
 };

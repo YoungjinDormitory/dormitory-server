@@ -26,15 +26,15 @@ module.exports = class Holiday extends Sequelize.Model{
                 modelName: 'Holiday',
                 tableName: 'holiday',
                 paranoid: false,
-                charset: 'utf8mb4',
-                collate: 'utf8mb4_general_ci'
+                charset: 'utf8',
+                collate: 'utf8_unicode_ci'
             }
         );
     }
     static associate(db) {
         db.Holiday.belongsTo(db.AdmInfo, {
             foreginKey: 'adm_id',
-            sourceKey: 'adm_id',
+            targetKey: 'adm_id',
         });
     }
 };

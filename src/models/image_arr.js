@@ -11,7 +11,7 @@ module.exports = class ImageArr extends Sequelize.Model{
                     primaryKey: true,
                 },
                 path: {
-                    type: Sequelize.BLOB,
+                    type: Sequelize.STRING(300),
                     allowNull: false,
                 },
             },
@@ -22,15 +22,15 @@ module.exports = class ImageArr extends Sequelize.Model{
                 modelName: 'ImageArr',
                 tableName: 'image_arr',
                 paranoid: false,
-                charset: 'utf8mb4',
-                collate: 'utf8mb4_general_ci',
+                charset: 'utf8',
+                collate: 'utf8_unicode_ci',
             }
         );
     }
     static associate(db) {
         db.ImageArr.belongsTo(db.Bulletin, {
             foreignKey: 'bulletin_id',
-            sourceKey: 'bulletin_id',
+            targetKey: 'bulletin_id',
         });
     }
 };

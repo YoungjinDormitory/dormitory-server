@@ -18,19 +18,19 @@ module.exports = class Like extends Sequelize.Model{
                 modelName: 'Like',
                 tableName: 'like_table',
                 paranoid: false,
-                charset: 'utf8mb4',
-                collate: 'utf8mb4_general_ci',
+                charset: 'utf8',
+                collate: 'utf8_unicode_ci',
             }
         );
     }
     static associate(db) {
         db.Like.belongsTo(db.StdInfo, {
             foreignKey: 'std_id',
-            sourceKey: 'std_id',
+            targetKey: 'std_id',
         });
         db.Like.belongsTo(db.Bulletin, {
             foreignKey: 'bulletin_id',
-            sourceKey: 'bulletin_id',
+            targetKey: 'bulletin_id',
         });
     }
 };

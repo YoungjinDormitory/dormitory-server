@@ -33,15 +33,15 @@ module.exports = class FoodList extends Sequelize.Model{
                 underscored: false,
                 modelName: 'MenuList',
                 tableName: 'menu_list',
-                charset: 'utf8mb4',
-                collate: 'utf8mb4_general_ci',
+                charset: 'utf8',
+                collate: 'utf8_unicode_ci',
             }
         );
     }
     static associate(db){
         db.MenuList.belongsTo(db.AdmInfo, {
             foreignKey: 'adm_id',
-            sourceKey: 'adm_id',
+            targetKey: 'adm_id',
         });
     }
 };

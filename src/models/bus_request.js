@@ -34,15 +34,15 @@ module.exports = class BusRequest extends Sequelize.Model{
                 modelName: 'BusRequest',
                 tableName: 'bus_request',
                 paranoid: false,
-                charset: 'utf8mb4',
-                collate: 'utf8mb4_general_ci',
+                charset: 'utf8',
+                collate: 'utf8_unicode_ci',
             }
         );
     }
     static associate(db) {
         db.BusRequest.belongsTo(db.StdInfo, {
             foreginKey: 'std_id',
-            sourceKey: 'std_id',
+            targetKey: 'std_id',
         });
     }
 };

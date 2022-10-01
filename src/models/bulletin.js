@@ -40,15 +40,15 @@ module.exports = class Bulletin extends Sequelize.Model{
                 modelName: 'Bulletin',
                 tableName: 'bulletin',
                 paranoid: false,
-                charset: 'utf8mb4',
-                collate: 'utf8mb4_general_ci',
+                charset: 'utf8',
+                collate: 'utf8_unicode_ci',
             }
         );
     }
     static associate(db){
         db.Bulletin.belongsTo(db.StdInfo, {
             foreignKey: 'std_id',
-            sourceKey: 'std_id',
+            targetKey: 'std_id',
         });
         db.Bulletin.hasMany(db.Hot, {
             foreignKey: 'bulletin_id',

@@ -30,15 +30,15 @@ module.exports = class HlthRequest extends Sequelize.Model{
                 modelName: 'HlthRequest',
                 tableName: 'hlth_request',
                 paranoid: false,
-                charset: 'utf8mb4',
-                collate: 'utf8mb4_geteran_ci'
+                charset: 'utf8',
+                collate: 'utf8_unicode_ci'
             }
         );
     }
     static associate(db) {
         db.HlthRequest.belongsTo(db.StdInfo, {
             foreignKey: 'std_id',
-            sourceKey: 'std_id',
+            targetKey: 'std_id',
         });
     }
 };

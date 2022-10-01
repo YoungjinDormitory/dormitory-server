@@ -39,15 +39,15 @@ module.exports = class AsRequest extends Sequelize.Model{
                 modelName: 'AsRequest',
                 tableName: 'as_request',
                 paranoid: false,
-                charset: 'utf8md4',
-                collate: 'utf8mb4_general_ci',
+                charset: 'utf8',
+                collate: 'utf8_unicode_ci',
             }
         );
     }
     static associate(db){
         db.AsRequest.belongsTo(db.StdInfo, {
             foreignKey: 'std_id',
-            sourceKey: 'std_id',
+            targetKey: 'std_id',
         });
     }
 };

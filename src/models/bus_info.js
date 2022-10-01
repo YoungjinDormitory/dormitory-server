@@ -38,15 +38,15 @@ module.exports = class BusInfo extends Sequelize.Model{
                 modelName: 'BusInfo',
                 tableName: 'bus_info',
                 paranoid: false,
-                charset: 'utf8mb4',
-                collate: 'utf8mb4_general_ci'
+                charset: 'utf8',
+                collate: 'utf8_unicode_ci'
             }
         );
     }
     static associate(db) {
         db.BusInfo.belongsTo(db.AdmInfo, {
             foreignKey: 'adm_id',
-            sourceKey: 'adm_id',
+            targetKey: 'adm_id',
         });
     }
 };

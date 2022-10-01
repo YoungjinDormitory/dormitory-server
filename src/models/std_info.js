@@ -42,8 +42,8 @@ module.exports = class StdInfo extends Sequelize.Model{
                 modelName: 'StdInfo',
                 tableName: 'std_info',
                 paranoid: false,
-                charset: 'utf8mb4',
-                collate: 'utf8mb4_general_ci',
+                charset: 'utf8',
+                collate: 'utf8_unicode_ci',
             }
         );
     }

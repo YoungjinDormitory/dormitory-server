@@ -41,8 +41,8 @@ module.exports = class StdWait extends Sequelize.Model{
                 modelName: 'StdWait',
                 tableName: 'std_wait',
                 paranoid: false,
-                charset: 'utf8mb4',
-                collate: 'utf8mb4_general_ci',
+                charset: 'utf8',
+                collate: 'utf8_unicode_ci',
             }
         );
     }

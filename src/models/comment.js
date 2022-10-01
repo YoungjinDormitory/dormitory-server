@@ -17,6 +17,18 @@ module.exports = class Comment extends Sequelize.Model{
                 create_date: {
                     type: Sequelize.DATE,
                     allowNull: false,
+                },
+                level: {
+                    type: Sequelize.INTEGER,
+                    allowNull: false,
+                },
+                deps: {
+                    type: Sequelize.INTEGER,
+                    allowNull: false,
+                },
+                group_id: {
+                    type: Sequelize.INTEGER,
+                    allowNull: false,
                 }
             },
             {
@@ -26,19 +38,19 @@ module.exports = class Comment extends Sequelize.Model{
                 modelName: 'Comment',
                 tableName: 'comment',
                 paranoid: false,
-                charset: 'utf8mb4',
-                collate: 'utf8mb4_general_ci',
+                charset: 'utf8',
+                collate: 'utf8_unicode_ci',
             }
         );
     }
     static associate(db){
         db.Comment.belongsTo(db.StdInfo, {
             foreignKey: 'std_id',
-            sourceKey: 'std_id',
+            targetKey: 'std_id',
         });
         db.Comment.belongsTo(db.Bulletin, {
             foreignKey: 'bulletin_id',
-            sourceKey: 'bulletin_id',
+            targetKey: 'bulletin_id',
         });
     }
 };

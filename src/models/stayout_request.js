@@ -26,15 +26,15 @@ module.exports = class StayoutRequest extends Sequelize.Model{
                 modelName: 'StayoutRequest',
                 tableName: 'stayout_request',
                 paranoid: false,
-                charset: 'utf8mb4',
-                collate: 'utf8mb4_general_ci',
+                charset: 'utf8',
+                collate: 'utf8_unicode_ci',
             }
         );
     }
     static associate(db) {
         db.StayoutRequest.belongsTo(db.StdInfo,{
             foreignKey: 'std_id',
-            sourceKey: 'std_id',
+            targetKey: 'std_id',
         });
     }
 };
