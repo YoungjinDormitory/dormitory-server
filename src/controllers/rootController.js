@@ -2,19 +2,18 @@ import passport from 'passport';
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
 import StdInfo from '../models/std_info';
-import AdmInfo from '../models/adm_info';
-import StdWait from '../models/std_wait';
 import createToken from '../util/jwt/createToken';
 import createHash from '../util/hash/createHash';
 import verifyToken from '../util/jwt/verifyToken';
 
 const transporter = nodemailer.createTransport({
-    service:'naver',
+    service: "Naver",
     auth: {
-        user: '@naver.com', //mail
-        pass: 'password',
-    }
-})
+      user: process.env.E_MAIL, //mail
+      pass: process.env.PASSWORD,
+    },
+  });
+  
 
 //---App---
 //App login
@@ -24,9 +23,10 @@ export const restoreAccessToken = async(req, res, next) => {
     try{
         const find = await StdInfo.findOne({
             where: {
-                refresh_token : refresh.hash
+                refresh_token : refresh.hash,
             }
         });
+
         if(find){
             const { std_id, std_name } = find;
             const userObj = { std_id, std_name };
@@ -40,12 +40,19 @@ export const restoreAccessToken = async(req, res, next) => {
 }
 
 export const user = async(req, res, next) => {
-    if(req.user) {
-        return res.json(req.user);
-    }else {
-        return res.status(404).send('YOU ARE GUEST');
-    }
+    if (req.user) {
+        const user = await StdInfo.findOne({
+            attribute: ["std_id, std_name, room_num"],
+            where: {
+                std_id: req.user.std_id,
+            },
+        });
+    return res.json(user);
+  } else {
+    return res.status(404).send("YOU ARE GUEST");
+  }
 };
+
 
 export const login = async(req, res, next) => {
     const { std_id, password } = req.body;
@@ -56,9 +63,10 @@ export const login = async(req, res, next) => {
                 password,
             },
         });
-        const userObj = { std_name: userInfo.std_name, std_id };
         if(userInfo){
-            const accessToken = createToken(userObj, '10s');
+            const userObj = { std_name: userInfo.std_name, std_id };
+            
+            const accessToken = createToken(userObj, '1h');
             const hash = await createHash(userObj)
             const refreshToken = createToken({ hash }, '1y');
             res.cookie('refreshToken', refreshToken,
@@ -68,44 +76,45 @@ export const login = async(req, res, next) => {
             })
             return res.json({accessToken});
         }
+        return res.status(404).send('Login Failed');
     }catch(err){
-        console.log(err);
+       next();
     }
 };
 
 //App logout
 export const logout = async(req,res,next) => {
-    req.logout((err) => {
-        if(err){
-            next(err);
-        }
-    });
-    req.session.destroy();
-    return res.status(200).send('Success');
-};
+    res.cookie("refreshToken", "", {
+        maxAge: 0,
+        httpOnly: true,
+      });
+      return res.status(200).send("Success");
+    };
+    
 
 //App find password
 export const findPw = async(req, res, next) => {
     try{
         const mailOptions = {
-            from: '',//email
+            from: process.env.E_MAIL, //email
             to: req.body.e_mail,
-            subject: 'hello',
+            subject: "hello",
             text: `이메일 인증 코드 ${req.body.hash}`,
-        };
-        transporter.sendMail(mailOptions, function (error, info){
-            if(err){
+          };
+          transporter.sendMail(mailOptions, function (err, info) {
+            if (err) {
                 console.error(err);
-            }else {
-                console.log('Email sent: ' + info.response);
+            } else {
+                console.log("Email sent: " + info.response);
             }
-        })
-        return res.status(200).send('Success');
-    }catch(err){
+        });
+        return res.status(200).send("Success");
+    } catch (err) {
         console.error(err);
         next(err);
     }
-}
+};
+      
 
 //App change password
 export const changePw = async(req, res, next) => {

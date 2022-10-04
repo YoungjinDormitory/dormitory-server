@@ -6,39 +6,54 @@ import moment from 'moment';
 //---App---
 //bus inquiry
 export const busInquiry = async(req, res, next) => {
-    try{
-        const data = await BusRequest.findAll({
-            where: {
-                std_id: req.user.id,
+    try {
+        const { start_date, end_date, limit } = req.query;
+        const option = start_date &&
+          end_date && [
+            {
+              bus_date: {
+                [Op.gte]: moment(start_date).toISOString(),
+              },
             },
-            order: [['bus_req_id', 'DESC']],
+            { bus_date: { [Op.lte]: moment(end_date).toISOString() } },
+          ];
+    
+        const data = await BusRequest.findAll({
+          where: {
+            std_id: req.user.std_id,
+            [Op.and]: option ? option : [],
+          },
+          order: [["bus_req_id", "DESC"]],
+          limit: limit ? Number(limit) : 10,
         });
         return res.status(200).json(data);
-    } catch (err) {
+      } catch (err) {
         console.error(err);
         next(err);
-    }
-};
+      }
+    };
+    
 
 //bus search
 export const busSearch = async(req, res, next) => {
-    try{
+    try {
         const data = await BusRequest.findAll({
-            where: {
-                std_id: req.user.id,
-                [Op.and]: [
-                    {bus_date: {[Op.gte]: moment(req.body.startDate).toISOString()}},
-                    {bus_date: {[Op.lte]: moment(req.body.endDate)}},
-                ],
-            },
-            order: [['bus_req_id', 'DESC']],
+          where: {
+            std_id: req.user.id,
+            [Op.and]: [
+              { bus_date: { [Op.gte]: moment(req.body.startDate).toISOString() } },
+              { bus_date: { [Op.lte]: moment(req.body.endDate) } },
+            ],
+          },
+          order: [["bus_req_id", "DESC"]],
         });
         return res.status(200).json(data);
-    }catch (err) {
+      } catch (err) {
         console.error(err);
         next(err);
-    }
-};
+      }
+    };
+    
 
 //bus reservations
 export const busCreate = async(req, res, next) => {
@@ -90,6 +105,8 @@ export const busDelete = async(req, res, next) => {
         const data = await BusRequest.destroy({
             where:{
                 bus_req_id: req.body.bus_req_id,
+                std_id: req.user.std_id,
+
             },
         });
 
