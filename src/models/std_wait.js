@@ -46,7 +46,5 @@ module.exports = class StdWait extends Sequelize.Model{
             }
         );
     }
-    static associate(db) {
-        
-    }
+    static associate(db) {}
 }

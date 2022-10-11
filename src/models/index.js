@@ -1,4 +1,6 @@
 import { Sequelize } from "sequelize";
+import cfg from '../config/config.json';
+import fs from 'fs';
 
 import AsRequest from './as_request';
 import HlthRequest from './hlth_request';
@@ -19,7 +21,7 @@ import Holiday from './holiday';
 import MenuList from './menu_list';
 
 const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
+const config = cfg[env];
 const db = {};
 
 const sequelize = new Sequelize(

@@ -8,7 +8,7 @@ menuRouter.post('/app', menu);
 menuRouter.post('/exist', menuExist);
 
 //Web
-menuRouter.route('/').get(admMenuInquiry).get(admMenuUpdate).post(admMenuDelete);
+menuRouter.route('/').post(admMenuInquiry).post(admMenuUpdate).post(admMenuDelete);
 menuRouter.post('/pagenum', admMenuPageNum);
 menuRouter.post('/create', admMenuCreate);
 

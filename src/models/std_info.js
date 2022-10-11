@@ -34,6 +34,11 @@ module.exports = class StdInfo extends Sequelize.Model{
                     allowNull: false,
                     defaultValue: false,
                 },
+                refresh_token: {
+                    type: Sequelize.STRING(1000),
+                    allowNull: true,
+                    defaultValue: null,
+                }
             },
             {
                 sequelize,

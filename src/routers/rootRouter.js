@@ -1,18 +1,21 @@
 import express from 'express';
-import { adminLogin, changePw, findPw, login, logout, signUp } from '../controllers/rootController';
+import { adminInfo, adminLogin, adminRestoreAccessToken, changePw, findPw, login, logout, restoreAccessToken, sendMail, signUp, user } from '../controllers/rootController';
 
 const rootRouter = express.Router();
 
 //App
+rootRouter.get('/restoreAccessToken', restoreAccessToken);
+rootRouter.get('/adminRestoreAccessToken', adminRestoreAccessToken);
 rootRouter.post('/signup', signUp);
 rootRouter.post('/login', login);
 rootRouter.post('/logout', logout);
 rootRouter.post('/find/pw', findPw);
 rootRouter.post('/change/pw', changePw);
-// rootRouter.get('/login/user', startLogin);
+rootRouter.post('/sendMail', sendMail);
 
 //Web 
+rootRouter.get('/user', user);
+rootRouter.get('/admin/info', adminInfo);
 rootRouter.post('/admin/login', adminLogin);
-
 
 export default rootRouter;

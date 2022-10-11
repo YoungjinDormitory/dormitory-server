@@ -5,7 +5,7 @@ const busInfoRouter = express.Router();
 
 //App
 busInfoRouter.get('/', busInfo);
-busInfoRouter.get('/busstop', busStop);
+busInfoRouter.post('/busstop', busStop);
 busInfoRouter.post('/bustime', busTime);
 
 //Web

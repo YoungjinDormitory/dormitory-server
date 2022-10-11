@@ -1,26 +1,39 @@
 // 1. userObj 로 해쉬를 만든다.
 import crypto from 'crypto';
 import StdInfo from '../../models/std_info';
+import AdmInfo from '../../models/adm_info';
 
 async function createHash(userObj){
-    console.log(userObj);
     const result = crypto.createHash('sha256').update(JSON.stringify(userObj)).digest('hex');
-    try{
-        // console.log(result);
-        await StdInfo.update(
+    try {
+        if (userObj.role === "admin") {
+          await AdmInfo.update(
             {
-                refresh_token: result,
+              refresh_token: result,
             },
             {
-                where: {
-                    std_id: userObj.std_id,
-                }
+              where: {
+                adm_id: userObj.adm_id,
+              },
             }
-        );
-        return result;
-    }catch(err) {
+          );
+          return result;
+        } else {
+          await StdInfo.update(
+            {
+              refresh_token: result,
+            },
+            {
+              where: {
+                std_id: userObj.std_id,
+              },
+            }
+          );
+          return result;
+        }
+      } catch (err) {
         console.log(err);
-    }
+      }
 }
 
 export default createHash;

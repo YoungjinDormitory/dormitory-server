@@ -1,8 +1,9 @@
 import express from 'express';
-import { hotInquire } from '../controllers/hotController';
+import { hotCount, hotInquire } from '../controllers/hotController';
 
 const hotRouter = express.Router();
 
-hotRouter.post('/', hotInquire);
+hotRouter.get('/', hotInquire);
+hotRouter.get('/count', hotCount);
 
 export default hotRouter;

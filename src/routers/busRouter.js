@@ -1,13 +1,13 @@
 import express from 'express';
-import { admBusHome, admBusInquiry, admBusPageNum, busCreate, busDelete, busInquiry, busSearch, busUpdate } from '../controllers/busController';
+import { admBusHome, admBusInquiry, admBusPageNum, busDelete, busInquiry, busReservations, busRevision, busSearch } from '../controllers/busController';
 
 const busRouter = express.Router();
 
 //App BusRouter
 busRouter.get('/', busInquiry);
 busRouter.post('/search', busSearch);
-busRouter.post('/create', busCreate);
-busRouter.patch('/update', busUpdate);
+busRouter.post('/create', busReservations);
+busRouter.post('/update', busRevision);
 busRouter.post('/delete', busDelete);
 
 //Web BusRouter

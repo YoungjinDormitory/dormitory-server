@@ -6,7 +6,7 @@ import moment from 'moment';
 
 //---App---
 //As Inquiry
-export const appInquiry = async (req, res, next) => {
+export const asInquiry = async (req, res, next) => {
     try {
       const { start_date, end_date, limit } = req.query;
       const option = start_date &&

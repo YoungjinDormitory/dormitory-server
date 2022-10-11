@@ -10,7 +10,7 @@ hlthRouter.post('/create', hlthCreate);
 hlthRouter.post('/delete', hlthDelete);
 
 //Web
-hlthRouter.get('/admin', admHlthInquiry);
+hlthRouter.post('/admin', admHlthInquiry);
 hlthRouter.post('/admin/pagenum', admHlthPageNum);
 
 export default hlthRouter;
