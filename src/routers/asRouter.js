@@ -11,8 +11,8 @@ asRouter.post('/create', asCreate);
 asRouter.post('/delete', asDelete);
 
 //Web
-asRouter.get('/admin/inquiry', admAsInquiry);
-asRouter.post('/admin/checked', admAsChecked);
+asRouter.post('/admin/inquiry', admAsInquiry);
+asRouter.patch('/admin/checked', admAsChecked);
 asRouter.post('/admin/pagenum', admAsPageNum);
 
 export default asRouter;

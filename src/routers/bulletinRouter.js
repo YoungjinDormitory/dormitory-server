@@ -5,17 +5,19 @@ import {  bulletinClickHot, bulletinCreate, bulletinDelete, bulletinImgInquiry, 
 const bulletinRouter = express.Router();
 
 bulletinRouter.get('/', bulletinInquiry);
-bulletinRouter.post('/search', bulletinSearch);
+bulletinRouter.get('/search', bulletinSearch);
 
 //App
 bulletinRouter.use(deserializeUser)
+bulletinRouter.get('/detail', bulletinDetail);
 bulletinRouter.get('/image', bulletinImgInquiry);
-bulletinRouter.get('/watch', bulletinInquiryView);
-bulletinRouter.post('/update', bulletinUpdate);
-bulletinRouter.post('/create', bulletinCreate);
-bulletinRouter.post('/clickhot', bulletinClickHot);
+bulletinRouter.get('/search/count', bulletinSearchCount);
+bulletinRouter.get('/count', bulletinCount);
+
+bulletinRouter.post('/view', bulletinInquiryView);
+bulletinRouter.post('/create', upload.array('images'), bulletinCreate);
+bulletinRouter.post('/update', upload.array('images'), bulletinUpdate);
+bulletinRouter.post('/hot', bulletinClickHot);
 bulletinRouter.post('/delete', bulletinDelete);
-
-
 
 export default bulletinRouter;

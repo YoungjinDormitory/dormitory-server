@@ -1,6 +1,4 @@
-import Sequelize from '../models';
 import BusInfo from '../models/bus_info';
-
 
 //---App---
 //bus Inquiry
@@ -16,7 +14,7 @@ export const busInfo = async(req, res, next) => {
 
 //bus Stop
 export const busStop = async(req, res, next) => {
-    const { type, bus_date } = req.body;
+    const { type, bus_date } = req.query;
     try{
         const data = await BusInfo.findAll({
             attributes: ['bus_stop','bus_id'],

@@ -6,14 +6,29 @@ import moment from 'moment';
 //---App---
 //Stayout Inquiry
 export const stayoutInquiry = async(req, res, next) => {
-    try{
+    const { start_date, end_date, limit } = req.query;
+    const option = start_date &&
+        end_date && [
+        {
+            start_date: {
+            [Op.gte]: moment(start_date).toISOString(),
+            },
+        },
+        { start_date: { [Op.lte]: moment(end_date).toISOString() } },
+        ];
+
+    try {
         const data = await StayoutRequest.findAll({
-            where: { std_id: req.user.id },
-            order: [['stayout_id', 'DESC']],
+        where: {
+            std_id: req.user.std_id,
+            [Op.and]: option ? option : [],
+        },
+        order: [["stayout_id", "DESC"]],
+        limit: limit ? Number(limit) : 10,
         });
 
         return res.status(200).json(data);
-    }catch (err) {
+    } catch (err) {
         console.error(err);
         next(err);
     }
@@ -62,7 +77,6 @@ export const stayoutUpdate = async(req, res, next) => {
 export const stayoutDelete = async(req, res, next) => {
     const { stayout_id } = req.body;
     try{
-        console.log(req.body);
         const data = await StayoutRequest.destroy({
             where: {
                 stayout_id,

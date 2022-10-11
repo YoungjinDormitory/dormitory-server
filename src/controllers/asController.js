@@ -6,45 +6,34 @@ import moment from 'moment';
 
 //---App---
 //As Inquiry
-export const asInquiry = async(req, res, next) => {
-    try{
-        const data = await AsRequest.findAll({
-            where: { std_id: req.user.id },
-            order: [['as_id', 'DESC']],
-        });
-
-        return res.status(200).json(data);
-    }catch (err) {
-        console.error(err);
-        next(err);
-    }
-};
-
-//As search
-export const asSearch = async(req, res, next) => {
-    const { startDate, endDate } = req.body;
-    try{
-        const data = await AsRequest.findAll({
-            where: {
-                std_id: req.user.id,
-                [Op.and]: [
-                    {
-                        request_date: {
-                            [Op.gte]: moment(startDate).toISOString(),
-                        },
-                    },
-                    { request_date: { [Op.lte]: moment(endDate)}},
-                ],
+export const appInquiry = async (req, res, next) => {
+    try {
+      const { start_date, end_date, limit } = req.query;
+      const option = start_date &&
+        end_date && [
+          {
+            request_date: {
+              [Op.gte]: moment(start_date).toISOString(),
             },
-            order: [['as_id', 'DESC']],
-        });
-
-        return res.status(200).json(data);
-    }catch (err) {
+          },
+          { request_date: { [Op.lte]: moment(end_date) } },
+        ];
+  
+      const data = await AsRequest.findAll({
+        where: {
+          std_id: req.user.std_id,
+          [Op.and]: option ? option : [],
+        },
+        order: [["as_id", "DESC"]],
+        limit: limit ? Number(limit) : 10,
+      });
+  
+      return res.status(200).json(data);
+    } catch (err) {
         console.error(err);
         next(err);
     }
-};
+  };
 
 //As create
 export const asCreate = async(req, res, next) => {
@@ -55,7 +44,7 @@ export const asCreate = async(req, res, next) => {
             content,
             request_date: Date.now(),
             vst_check,
-            std_id: req.user.id,
+            std_id: req.user.std_id,
         });
 
         return res.status(200).send('Create Success');
@@ -78,7 +67,7 @@ export const asUpdate = async(req, res, next) => {
             },
             {
                 where: {
-                    std_id: req.user.id,
+                    std_id: req.user.std_id,
                     as_id,
                 },
             }

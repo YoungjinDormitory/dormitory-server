@@ -41,7 +41,7 @@ module.exports = class BusRequest extends Sequelize.Model{
     }
     static associate(db) {
         db.BusRequest.belongsTo(db.StdInfo, {
-            foreginKey: 'std_id',
+            foreignKey: 'std_id',
             targetKey: 'std_id',
         });
     }

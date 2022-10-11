@@ -29,10 +29,10 @@ export const hlthInquiry = async (req, res, next) => {
   
       return res.status(200).json(data);
     } catch (err) {
-      console.error(err);
-      next(err);
+        console.error(err);
+        next(err);
     }
-  };
+};
 
 //Hlth Search
 export const hlthSearch = async(req, res, next) => {
@@ -40,7 +40,7 @@ export const hlthSearch = async(req, res, next) => {
     try{
         const data = await HlthRequest.findAll({
             where: {
-                std_id: req.user.id,
+                std_id: req.user.std_id,
                 [Op.and]: [
                     {date: { [Op.gte]: moment(startDate).toISOString()}},
                     {date: { [Op.lte]: moment(endDate)}},

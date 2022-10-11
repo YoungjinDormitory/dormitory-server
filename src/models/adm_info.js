@@ -16,6 +16,11 @@ module.exports = class AdmInfo extends Sequelize.Model{
                 adm_name: {
                     type: Sequelize.STRING(30),
                     allowNull: false,
+                },
+                refresh_token: {
+                    type: Sequelize.STRING(1000),
+                    allowNull: true,
+                    defaultValue: null,
                 }
             },
             {

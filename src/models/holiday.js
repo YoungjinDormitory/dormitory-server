@@ -33,7 +33,7 @@ module.exports = class Holiday extends Sequelize.Model{
     }
     static associate(db) {
         db.Holiday.belongsTo(db.AdmInfo, {
-            foreginKey: 'adm_id',
+            foreignKey: 'adm_id',
             targetKey: 'adm_id',
         });
     }

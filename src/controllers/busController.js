@@ -27,13 +27,12 @@ export const busInquiry = async(req, res, next) => {
           limit: limit ? Number(limit) : 10,
         });
         return res.status(200).json(data);
-      } catch (err) {
+    } catch (err) {
         console.error(err);
         next(err);
-      }
-    };
+    }
+};
     
-
 //bus search
 export const busSearch = async(req, res, next) => {
     try {
@@ -48,15 +47,15 @@ export const busSearch = async(req, res, next) => {
           order: [["bus_req_id", "DESC"]],
         });
         return res.status(200).json(data);
-      } catch (err) {
+    } catch (err) {
         console.error(err);
         next(err);
-      }
-    };
+    }
+};
     
 
 //bus reservations
-export const busCreate = async(req, res, next) => {
+export const busReservations = async(req, res, next) => {
     const { bus_date, bus_way, bus_stop, bus_time } = req.body;
     try{
         await BusRequest.create({
@@ -64,7 +63,7 @@ export const busCreate = async(req, res, next) => {
             bus_way,
             bus_stop,
             bus_time,
-            std_id: req.user.id,
+            std_id: req.user.std_id,
         });
 
         return res.status(200).send('Create Success');
@@ -75,7 +74,7 @@ export const busCreate = async(req, res, next) => {
 };
 
 //bus revision
-export const busUpdate = async(req, res, next) => {
+export const busRevision = async(req, res, next) => {
     const { bus_date, bus_way, bus_stop, bus_time } = req.body;
     try{
         const data = await BusRequest.update(
@@ -88,7 +87,7 @@ export const busUpdate = async(req, res, next) => {
             {
                 where: {
                     bus_req_id,
-                    std_id: req.user.id,
+                    std_id: req.user.std_id,
                 },
             }
         );
@@ -106,7 +105,6 @@ export const busDelete = async(req, res, next) => {
             where:{
                 bus_req_id: req.body.bus_req_id,
                 std_id: req.user.std_id,
-
             },
         });
 

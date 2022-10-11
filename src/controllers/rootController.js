@@ -39,6 +39,32 @@ export const restoreAccessToken = async(req, res, next) => {
     }
 }
 
+//Admin Login
+export const adminRestoreAccessToken = async (req, res, next) => {
+    const { refreshToken } = req.cookies;
+    const refresh = verifyToken(refreshToken);
+  
+    try {
+      const find = await AdmInfo.findOne({
+        where: {
+          refresh_token: refresh.hash,
+        },
+      });
+  
+      if (find) {
+        const { adm_id, adm_name } = find;
+        const userObj = { adm_id, adm_name, role: "admin" };
+  
+        const accessToken = createToken(userObj, "10s");
+        return res.json({ accessToken });
+      } else {
+        return res.status(400).send("USER IS NOT FOUND");
+      }
+    } catch (err) {
+      next(err);
+    }
+  };
+
 export const user = async(req, res, next) => {
     if (req.user) {
         const user = await StdInfo.findOne({
@@ -65,7 +91,6 @@ export const login = async(req, res, next) => {
         });
         if(userInfo){
             const userObj = { std_name: userInfo.std_name, std_id };
-            
             const accessToken = createToken(userObj, '1h');
             const hash = await createHash(userObj)
             const refreshToken = createToken({ hash }, '1y');
@@ -136,60 +161,82 @@ export const changePw = async(req, res, next) => {
     }
 }
 
+//send Mail
+export const sendMail = async (req, res, next) => {
+    try {
+      const { hash, e_mail } = req.body;
+      const mailOptions = {
+        from: process.env.E_MAIL,
+        to: e_mail,
+        subject: "hello",
+        text: "해쉬 값은 : " + hash + "입니다. ",
+      };
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Email sent: " + info.response);
+          console.log(info.response);
+        }
+      });
+      return res.status(200).send("Success");
+    } catch (err) {
+      next(err);
+    }
+  };
+
 //App Signup
 export const signUp = async(req, res, next) => {
     const { std_id, std_name, password, ph_num, room_num, e_mail } = req.body;
-    try{
-        const hash = crypto.randomBytes(10).toString('hex');
-        // // const mailOptions = {
-        // //     from: 'vnfmsqkekrn@gmail.com',
-        // //     to: e_mail,
-        // //     subject: 'hello',
-        // //     text: 'Authification http://localhost:8000/auth/' + hash,
-        // // };
-        // transporter.sendMail(mailOptions, function (error, info){
-        //     if(error){
-        //         console.log(error);
-        //     }else {
-        //         console.log('Email sent: ' + info.response);
-        //         console.log(info.response);
-        //     }
-        // });
-        await StdInfo.create({
-            std_id,
-            std_name,
-            password,
-            ph_num,
-            room_num,
-            e_mail,
-            hash: hash,
-        });
-        return res.status(200).send('Success');
-    }catch(err) {
-        console.error(err);
-        next(err);
-    }
+  try {
+    await StdWait.create({
+      std_id,
+      std_name,
+      password,
+      ph_num,
+      room_num,
+      e_mail,
+    });
+    return res.status(200).send("Success");
+  } catch (err) {
+     console.error(err);
+     next(err);
+  }
 };
 
 //---Web---
 //login
 export const adminLogin = async(req,res,next) => {
-    passport.authenticate('local:admin', (err, user, info) => {
-        if(err){
-            console.error(err);
-            return next(err);
-        } else if(info){
-            return next(info);
-        }
-
-        return req.login(user, (loginErr) => {
-            if(loginErr){
-                return next(loginErr);
-            }
-            const filteredUser = Object.assign({}, user);
-            delete filteredUser.password;
-            return res.json(filteredUser);
+    const { adm_id, password } = req.body;
+    try {
+        const user = await AdmInfo.findOne({
+        where: {
+            adm_id,
+            password,
+        },
         });
-    })(req, res, next);
+        if (user) {
+        const userObj = { adm_name: user.adm_name, adm_id, role: "admin" };
+        const accessToken = createToken(userObj, "10s");
+        const hash = await createHash(userObj);
+        const refreshToken = createToken({ hash }, "1y");
+        res.cookie("refreshToken", refreshToken, {
+            maxAge: 3.154e10,
+            httpOnly: true,
+        });
+        return res.json({ accessToken });
+        }
+        return res.status(404).send("login failed");
+    } catch (err) {
+        next();
+    }
 };
 
+export const adminInfo = async (req, res, next) => {
+    try {
+      return res.json(req.user);
+    } catch (err) {
+      next(err);
+    }
+  };
+  
