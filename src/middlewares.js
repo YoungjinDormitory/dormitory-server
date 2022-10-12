@@ -8,7 +8,6 @@ export const deserializeUser = (req, res, next) => {
     return next();
   }
   try {
-    console.log("why came here?");
     const payload = verifyToken(accessToken);
     req.user = payload;
     return next();
