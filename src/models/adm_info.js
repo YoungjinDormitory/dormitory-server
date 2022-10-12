@@ -21,6 +21,10 @@ module.exports = class AdmInfo extends Sequelize.Model{
                     type: Sequelize.STRING(1000),
                     allowNull: true,
                     defaultValue: null,
+                },
+                role: {
+                    type: Sequelize.STRING(1000),
+                    allowNull: true,
                 }
             },
             {
