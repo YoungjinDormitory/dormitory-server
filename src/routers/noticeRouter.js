@@ -1,13 +1,12 @@
 import express from "express";
-import {
-  getNotice,
-  getNoticeDetail,
-  noticeInquiryView,
-} from "../controllers/noticeController";
+import { getNotice, getNoticeDetail, noticeCreate, noticeInquiryView, noticeDelete, noticeModify } from "../controllers/noticeController";
 const noticeRouter = express.Router();
 
-noticeRouter.get("/", getNotice);
-noticeRouter.get("/detail", getNoticeDetail);
+noticeRouter.post("/", getNotice);
+noticeRouter.post("/detail", getNoticeDetail);
 noticeRouter.post("/view", noticeInquiryView);
+noticeRouter.post("/create", noticeCreate);
+noticeRouter.post("/delete", noticeDelete);
+noticeRouter.post("/modify", noticeModify);
 
 export default noticeRouter;

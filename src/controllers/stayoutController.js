@@ -183,3 +183,14 @@ export const admStayoutDate = async (req, res, next) => {
     next(err);
   }
 };
+
+export const admAllStayoutInquiry = async (req, res, next) => {
+  try {
+    const data = await StayoutRequest.findAll();
+
+    return res.status(200).json(data);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+};

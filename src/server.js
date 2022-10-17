@@ -16,6 +16,7 @@ import {
   commentRouter,
   menuRouter,
   noticeRouter,
+  agreeRouter,
 } from "./routers";
 import busRouter from "./routers/busRouter";
 
@@ -40,11 +41,7 @@ app.use(express.urlencoded({ limit: "10mb", extended: false }));
 
 app.use(
   cors({
-    origin: [
-      process.env.NODE_ENV === "development"
-        ? process.env.DEV_CLIENT_DOMAIN
-        : process.env.PRODUCT_CLIENT_DOMAIN,
-    ],
+    origin: [process.env.NODE_ENV === "development" ? process.env.DEV_CLIENT_DOMAIN : process.env.PRODUCT_CLIENT_DOMAIN],
     credentials: true,
   })
 );
@@ -62,5 +59,6 @@ app.use("/hot", hotRouter);
 app.use("/bulletin", bulletinRouter);
 app.use("/comment", commentRouter);
 app.use("/menu", menuRouter);
+app.use("/agree", agreeRouter);
 
 export default app;

@@ -1,9 +1,13 @@
-import express from 'express';
-import { stdAgree, stdDelete, stdInquiry } from '../controllers/agreeController';
+import express from "express";
+import { stdAgree, stdDelete, stdAgreeInquiry, stdInquiry } from "../controllers/agreeController";
 
 const agreeRouter = express.Router();
 
 //Web
-agreeRouter.route('/').post(stdInquiry).post(stdAgree).post(stdDelete);
+agreeRouter.get("/", stdAgreeInquiry);
+// agreeRouter.post(stdAgree).post(stdDelete);
+agreeRouter.post("/grant", stdAgree);
+agreeRouter.get("/user", stdInquiry);
+agreeRouter.post("/delete", stdDelete);
 
 export default agreeRouter;

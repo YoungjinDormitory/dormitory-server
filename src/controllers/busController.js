@@ -39,10 +39,7 @@ export const busSearch = async (req, res, next) => {
     const data = await BusRequest.findAll({
       where: {
         std_id: req.user.std_id,
-        [Op.and]: [
-          { bus_date: { [Op.gte]: moment(req.body.startDate).toISOString() } },
-          { bus_date: { [Op.lte]: moment(req.body.endDate) } },
-        ],
+        [Op.and]: [{ bus_date: { [Op.gte]: moment(req.body.startDate).toISOString() } }, { bus_date: { [Op.lte]: moment(req.body.endDate) } }],
       },
       order: [["bus_req_id", "DESC"]],
     });
@@ -117,31 +114,21 @@ export const busDelete = async (req, res, next) => {
 //---Web---
 //bus 예약자 inquiry
 export const admBusHome = async (req, res, next) => {
-  const { nowPage, stdId, stdName, busStop, date } = req.body;
+  const { nowPage, std_id, std_name, bus_stop, bus_date } = req.body;
   try {
-    console.log(nowPage);
-    let Id = stdId;
-    let Name = stdName;
-    let BusStop = busStop;
-    let BusDate = date;
-    Id = Id || { [Op.ne]: null };
-    Name = Name || { [Op.ne]: null };
-    BusStop = BusStop || { [Op.ne]: null };
-    BusDate = BusDate || { [Op.ne]: null };
-
     const data = await BusRequest.findAll({
       include: [
         {
           model: StdInfo,
           where: {
-            std_id: Id,
-            std_name: Name,
+            std_id: std_id || { [Op.ne]: null },
+            std_name: std_name || { [Op.ne]: null },
           },
         },
       ],
       where: {
-        bus_date: BusDate,
-        bus_stop: busStop,
+        bus_date: bus_date || { [Op.ne]: null },
+        bus_stop: bus_stop || { [Op.ne]: null },
       },
       order: [["bus_req_id", "DESC"]],
       limit: 10,
@@ -168,7 +155,7 @@ export const admBusPageNum = async (req, res, next) => {
     BusStop = BusStop || { [Op.ne]: null };
     BusDate = BusDate || { [Op.ne]: null };
 
-    const data = await BusRequest.findAll({
+    const data = await BusRequest.findAndCountAll({
       include: [
         {
           model: StdInfo,
@@ -197,11 +184,7 @@ export const admBusInquiry = async (req, res, next) => {
     const now = new Date();
     now.setMonth(now.getMonth() + 1);
     const data = await BusRequest.findAll({
-      attributes: [
-        "bus_date",
-        "bus_time",
-        [fn("COUNT", col("bus_req_id")), "people_count"],
-      ],
+      attributes: ["bus_date", "bus_time", [fn("COUNT", col("bus_req_id")), "people_count"]],
       where: {
         bus_stop: req.body.type ? "복현캠퍼스" : "글로벌생활관",
         bus_date: {
@@ -211,6 +194,17 @@ export const admBusInquiry = async (req, res, next) => {
       group: ["bus_date", "bus_time"],
       raw: true,
     });
+    return res.status(200).json(data);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+};
+
+export const admAllBusInquiry = async (req, res, next) => {
+  try {
+    const data = await BusRequest.findAll();
+
     return res.status(200).json(data);
   } catch (err) {
     console.error(err);
