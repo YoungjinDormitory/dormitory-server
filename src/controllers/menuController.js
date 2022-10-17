@@ -53,16 +53,12 @@ export const menuExist = async (req, res, next) => {
 //---Web---
 //Menu Inquiry
 export const admMenuInquiry = async (req, res, next) => {
-  const { startDate, endDate, nowPage } = req.body;
+  const { start_date, end_date, nowPage } = req.body;
   try {
-    let StartDate = startDate;
-    let EndDate = endDate;
-    StartDate = StartDate || "1970-01-01";
-    EndDate = EndDate || "2038-01-19";
     const data = await MenuList.findAll({
       where: {
         date: {
-          [Op.between]: [StartDate, EndDate],
+          [Op.between]: [start_date || "1970-01-01", end_date || "2038-01-19"],
         },
       },
       order: [["date", "DESC"]],
@@ -79,16 +75,12 @@ export const admMenuInquiry = async (req, res, next) => {
 
 //Menu PageNum
 export const admMenuPageNum = async (req, res, next) => {
-  const { startDate, endDate } = req.body;
+  const { start_date, end_date } = req.body;
   try {
-    let StartDate = startDate;
-    let EndDate = endDate;
-    StartDate = StartDate || "1970-01-01";
-    EndDate = EndDate || "2038-01-19";
     const data = await MenuList.findAndCountAll({
       where: {
         date: {
-          [Op.between]: [StartDate, EndDate],
+          [Op.between]: [start_date || "1970-01-01", end_date || "2038-01-19"],
         },
       },
     });

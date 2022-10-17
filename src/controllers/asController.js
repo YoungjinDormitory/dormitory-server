@@ -181,28 +181,19 @@ export const admAsChecked = async (req, res, next) => {
 export const admAsPageNum = async (req, res, next) => {
   const { std_id, std_name, start_date, end_date } = req.body;
   try {
-    let Id = std_id;
-    let Name = std_name;
-    let StartDate = start_date;
-    let EndDate = end_date;
-    Id = Id || { [Op.ne]: null };
-    Name = Name || { [Op.ne]: null };
-    StartDate = StartDate || "1970-01-01";
-    EndDate = EndDate || "2038-01-01";
     const data = await AsRequest.findAndCountAll({
       include: [
         {
           model: StdInfo,
           where: {
-            std_id: Id || { [Op.ne]: null },
-            std_name: Name || { [Op.ne]: null },
+            std_id: std_id || { [Op.ne]: null },
+            std_name: std_name || { [Op.ne]: null },
           },
         },
       ],
       where: {
         request_date: {
-          [Op.gte]: moment(StartDate).toISOString(),
-          [Op.lte]: moment(EndDate),
+          [Op.between]: [start_date || "1970-01-01", end_date || "2038-12-31"],
         },
         repair_date: null,
       },

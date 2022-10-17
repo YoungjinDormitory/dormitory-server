@@ -91,31 +91,24 @@ export const hlthDelete = async (req, res, next) => {
 //---Web---
 //Hlth Inquiry 헬스 예약자 조회
 export const admHlthInquiry = async (req, res, next) => {
-  const { stdId, stdName, startDate, endDate, nowPage } = req.body;
+  const { std_id, std_name, start_date, end_date, nowPage } = req.body;
+  console.log(req.body);
   try {
-    let Id = stdId;
-    let Name = stdName;
-    let StartDate = startDate;
-    let EndDate = endDate;
-    Id = Id || { [Op.ne]: null };
-    Name = Name || { [Op.ne]: null };
-    StartDate = StartDate || "1970-01-01";
-    EndDate = EndDate || "2038-01-01";
     const data = await HlthRequest.findAll({
       include: [
         {
           model: StdInfo,
           where: {
-            std_id: Id,
-            std_name: Name,
+            std_id: std_id || { [Op.ne]: null },
+            std_name: std_name || { [Op.ne]: null },
           },
         },
       ],
       where: {
-        std_id: Id,
+        std_id: std_id || { [Op.ne]: null },
         date: {
-          [Op.gte]: moment(StartDate).toISOString(),
-          [Op.lte]: moment(EndDate),
+          [Op.gte]: start_date || "1970-01-01",
+          [Op.lte]: end_date || "2038-12-31",
         },
       },
       order: [["hlth_id", "DESC"]],
@@ -132,31 +125,23 @@ export const admHlthInquiry = async (req, res, next) => {
 
 //Hlth Pagenum
 export const admHlthPageNum = async (req, res, next) => {
-  const { stdId, stdName, startDate, endDate } = req.body;
+  const { std_id, std_name, start_date, end_date } = req.body;
   try {
-    let Id = stdId;
-    let Name = stdName;
-    let StartDate = startDate;
-    let EndDate = endDate;
-    Id = Id || { [Op.ne]: null };
-    Name = Name || { [Op.ne]: null };
-    StartDate = StartDate || "1970-01-01";
-    EndDate = EndDate || "2038-01-01";
     const data = await HlthRequest.findAndCountAll({
       include: [
         {
           model: StdInfo,
           where: {
-            std_id: Id,
-            std_name: Name,
+            std_id: std_id || { [Op.ne]: null },
+            std_name: std_name || { [Op.ne]: null },
           },
         },
       ],
       where: {
-        std_id: Id,
+        std_id: std_id || { [Op.ne]: null },
         date: {
-          [Op.gte]: moment(StartDate).toISOString(),
-          [Op.lte]: moment(EndDate),
+          [Op.gte]: start_date || "1970-01-01",
+          [Op.lte]: end_date || "2038-01-01",
         },
       },
     });

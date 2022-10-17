@@ -56,12 +56,8 @@ export const admBusPagenum = async (req, res, next) => {
         bus_date: bus_date || { [Op.ne]: null },
         type: type || { [Op.ne]: null },
       },
-      order: [
-        ["bus_date", "ASC"],
-        ["bus_times", "ASC"],
-      ],
     });
-    res.json(data);
+    return res.status(200).json(data);
   } catch (err) {
     console.error(err);
     next(err);
@@ -70,6 +66,7 @@ export const admBusPagenum = async (req, res, next) => {
 
 export const admBusInquiry = async (req, res, next) => {
   const { bus_date, type, nowPage } = req.body;
+  console.log(req.body);
   try {
     const data = await BusInfo.findAll({
       where: {
@@ -80,7 +77,9 @@ export const admBusInquiry = async (req, res, next) => {
       offset: nowPage ? (nowPage - 1) * 10 : 0,
       order: [
         ["bus_date", "ASC"],
+        ["type", "ASC"],
         ["bus_times", "ASC"],
+        ["bus_time", "ASC"],
       ],
     });
     return res.status(200).json(data);
@@ -143,7 +142,7 @@ export const admBusDelete = async (req, res, next) => {
       },
     });
 
-    return res.status(200).json(data);
+    return res.status(200).json("success");
   } catch (err) {
     console.error(err);
     next(err);

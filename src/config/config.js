@@ -5,6 +5,8 @@ export default {
     database: process.env.DEV_DATABASE,
     host: process.env.DEV_HOST,
     dialect: process.env.DEV_DIALECT,
+    dateStrings: true,
+    timezone: "+09:00",
   },
   test: {
     username: "",

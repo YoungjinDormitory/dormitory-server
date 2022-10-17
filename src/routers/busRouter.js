@@ -24,6 +24,6 @@ busRouter.post("/delete", busDelete);
 busRouter.post("/admin", admBusHome);
 busRouter.post("/admin/pagenum", admBusPageNum);
 busRouter.post("/admin/inquiry", admBusInquiry);
-// busRouter.get("/admin", admAllBusInquiry);
+busRouter.get("/admin", admAllBusInquiry);
 
 export default busRouter;

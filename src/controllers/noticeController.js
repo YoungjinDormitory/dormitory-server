@@ -1,11 +1,21 @@
 import Notice from "../models/notice";
 
+export async function getNoticePageNum(req, res, next) {
+  try {
+    const data = await Notice.findAndCountAll();
+    return res.status(200).json(data);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+}
+
 export async function getNotice(req, res, next) {
-  const { page, limit } = req.body;
+  const { page } = req.body;
   try {
     const data = await Notice.findAll({
-      offset: (Number(page) - 1) * Number(limit),
-      limit: Number(limit),
+      offset: (page - 1) * 10,
+      limit: 10,
       order: [["notice_id", "DESC"]],
     });
     return res.status(200).json(data);

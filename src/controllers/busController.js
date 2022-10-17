@@ -114,7 +114,7 @@ export const busDelete = async (req, res, next) => {
 //---Web---
 //bus 예약자 inquiry
 export const admBusHome = async (req, res, next) => {
-  const { nowPage, std_id, std_name, bus_stop, bus_date } = req.body;
+  const { nowPage, std_id, std_name, bus_stop, date } = req.body;
   try {
     const data = await BusRequest.findAll({
       include: [
@@ -127,14 +127,13 @@ export const admBusHome = async (req, res, next) => {
         },
       ],
       where: {
-        bus_date: bus_date || { [Op.ne]: null },
+        bus_date: date || { [Op.ne]: null },
         bus_stop: bus_stop || { [Op.ne]: null },
       },
       order: [["bus_req_id", "DESC"]],
       limit: 10,
       offset: (nowPage - 1) * 10,
     });
-
     return res.status(200).json(data);
   } catch (err) {
     console.error(err);
@@ -144,30 +143,21 @@ export const admBusHome = async (req, res, next) => {
 
 //bus pageNum
 export const admBusPageNum = async (req, res, next) => {
-  const { nowPage, stdId, stdName, busStop, date } = req.body;
+  const { nowPage, std_id, std_name, bus_stop, date } = req.body;
   try {
-    let Id = stdId;
-    let Name = stdName;
-    let BusStop = busStop;
-    let BusDate = date;
-    Id = Id || { [Op.ne]: null };
-    Name = Name || { [Op.ne]: null };
-    BusStop = BusStop || { [Op.ne]: null };
-    BusDate = BusDate || { [Op.ne]: null };
-
     const data = await BusRequest.findAndCountAll({
       include: [
         {
           model: StdInfo,
           where: {
-            std_id: Id,
-            std_name: Name,
+            std_id: std_id || { [Op.ne]: null },
+            std_name: std_name || { [Op.ne]: null },
           },
         },
       ],
       where: {
-        bus_date: BusDate,
-        bus_stop: busStop,
+        bus_date: date || { [Op.ne]: null },
+        bus_stop: bus_stop || { [Op.ne]: null },
       },
     });
 
