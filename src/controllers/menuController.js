@@ -10,7 +10,7 @@ export const menu = async (req, res, next) => {
     const endNow = new Date();
     const startDay = startNow.getDate() - startNow.getDay();
     const endDay = endNow.getDate() + (6 - endNow.getDay());
-    startNow.setDate(startDay);
+    startNow.setDate(startDay - 1);
     endNow.setDate(endDay);
 
     const startDate = startNow;
@@ -26,7 +26,6 @@ export const menu = async (req, res, next) => {
 
     return res.status(200).json(data);
   } catch (err) {
-    console.error(err);
     next(err);
   }
 };
@@ -45,7 +44,6 @@ export const menuExist = async (req, res, next) => {
     }
     return res.status(200).send(true);
   } catch (err) {
-    console.error(err);
     next(err);
   }
 };

@@ -6,7 +6,7 @@ const UPLOAD_PATH = "src/public/images";
 
 fs.readdir(UPLOAD_PATH, (error) => {
   if (error) {
-    fs.mkdirSync(UPLOAD_PATH);
+    fs.mkdirSync(UPLOAD_PATH, { recursive: true });
   }
 });
 

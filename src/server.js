@@ -41,7 +41,12 @@ app.use(express.urlencoded({ limit: "10mb", extended: false }));
 
 app.use(
   cors({
-    origin: [process.env.NODE_ENV === "development" ? process.env.DEV_CLIENT_DOMAIN : process.env.PRODUCT_CLIENT_DOMAIN],
+    origin: [
+      process.env.NODE_ENV === "development"
+        ? process.env.DEV_CLIENT_DOMAIN
+        : process.env.PRODUCT_CLIENT_DOMAIN,
+      "http://localhost:5173",
+    ],
     credentials: true,
   })
 );

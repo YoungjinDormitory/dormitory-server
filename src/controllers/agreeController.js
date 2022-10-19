@@ -13,7 +13,7 @@ export const stdAgreePageNum = async (req, res, next) => {
 };
 
 export const stdAgreeInquiry = async (req, res, next) => {
-  const { nowPage } = req.body;
+  const { nowPage } = req.query;
   try {
     const data = await StdWait.findAll({
       limit: 10,
@@ -56,8 +56,15 @@ export const stdInquiry = async (req, res, next) => {
 export const stdAgree = async (req, res, next) => {
   const { std_id, std_name, ph_num, room_num, password, e_mail } = req.body;
   try {
-    console.log(req.body);
-    const createData = await StdInfo.create({ std_id, std_name, ph_num, room_num, password, e_mail, access: 1 });
+    const createData = await StdInfo.create({
+      std_id,
+      std_name,
+      ph_num,
+      room_num,
+      password,
+      e_mail,
+      access: 1,
+    });
     const deleteData = await StdWait.destroy({ where: { std_id } });
     return res.status(200).json("success");
   } catch (err) {

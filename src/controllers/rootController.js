@@ -6,6 +6,7 @@ import createToken from "../util/jwt/createToken";
 import createHash from "../util/hash/createHash";
 import verifyToken from "../util/jwt/verifyToken";
 import AdmInfo from "../models/adm_info";
+import StdWait from "../models/std_wait";
 
 const transporter = nodemailer.createTransport({
   service: "Naver",
