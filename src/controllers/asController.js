@@ -100,28 +100,20 @@ export const asDelete = async (req, res, next) => {
 export const admAsInquiry = async (req, res, next) => {
   const { std_id, std_name, start_date, end_date, nowPage } = req.body;
   try {
-    let Id = std_id;
-    let Name = std_name;
-    let StartDate = start_date;
-    let EndDate = end_date;
-    Id = Id || { [Op.ne]: null };
-    Name = Name || { [Op.ne]: null };
-    StartDate = StartDate || "1970-01-01";
-    EndDate = EndDate || "2038-01-01";
     const data = await AsRequest.findAll({
       include: [
         {
           model: StdInfo,
           where: {
-            std_id: Id || { [Op.ne]: null },
-            std_name: Name || { [Op.ne]: null },
+            std_id: std_id || { [Op.ne]: null },
+            std_name: std_name || { [Op.ne]: null },
           },
         },
       ],
       where: {
         request_date: {
-          [Op.gte]: moment(StartDate).toISOString(),
-          [Op.lte]: moment(EndDate),
+          [Op.gte]: start_date || "1970-01-01",
+          [Op.lte]: end_date || "2038-01-01",
         },
         repair_date: null,
       },
@@ -151,25 +143,13 @@ export const admaAllAsInquiry = async (req, res, next) => {
 //As Checked
 export const admAsChecked = async (req, res, next) => {
   try {
-    const { id, nowPage } = req.body;
-    await AsRequest.update(
+    const { id } = req.body;
+    const data = await AsRequest.update(
       { repair_date: Date.now() },
       {
         where: { as_id: id },
       }
     );
-
-    const data = await AsRequest.findAndCountAll({
-      include: [
-        {
-          model: StdInfo,
-        },
-      ],
-      limit: 10,
-      offset: nowPage ? (nowPage - 1) * 10 : 0,
-      order: [["as_id", "DESC"]],
-    });
-
     return res.status(200).json(data);
   } catch (err) {
     console.error(err);

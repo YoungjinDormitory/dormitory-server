@@ -14,7 +14,7 @@ export async function getNotice(req, res, next) {
   const { page, limit } = req.query;
   try {
     const data = await Notice.findAll({
-      offset: (page - 1) * 10,
+      offset: (Number(page) - 1) * 10,
       limit: Number(limit),
       order: [["notice_id", "DESC"]],
     });
@@ -75,7 +75,6 @@ export async function noticeDelete(req, res, next) {
 export async function noticeModify(req, res, next) {
   try {
     const { notice_id, title, content } = req.body;
-    console.log(req.body);
     const data = await Notice.update(
       {
         title,
@@ -98,10 +97,7 @@ export async function noticeModify(req, res, next) {
 //Bulletin Inquiry View
 export const noticeInquiryView = async (req, res) => {
   try {
-    await Notice.increment(
-      { views: 1 },
-      { where: { notice_id: req.body.notice_id } }
-    );
+    await Notice.increment({ views: 1 }, { where: { notice_id: req.body.notice_id } });
     return res.status(200).send("Watch Success");
   } catch (err) {
     console.trace(err);

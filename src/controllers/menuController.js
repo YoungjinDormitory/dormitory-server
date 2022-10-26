@@ -116,7 +116,6 @@ export const admMenuUpdate = async (req, res, next) => {
 
 //Menu create
 export const admMenuCreate = async (req, res, next) => {
-  console.log(req.body);
   const { date, breakfast, lunch, dinner } = req.body;
   try {
     const data = await MenuList.create({

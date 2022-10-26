@@ -92,7 +92,6 @@ export const hlthDelete = async (req, res, next) => {
 //Hlth Inquiry 헬스 예약자 조회
 export const admHlthInquiry = async (req, res, next) => {
   const { std_id, std_name, start_date, end_date, nowPage } = req.body;
-  console.log(req.body);
   try {
     const data = await HlthRequest.findAll({
       include: [

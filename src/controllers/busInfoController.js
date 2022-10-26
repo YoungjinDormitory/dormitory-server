@@ -1,5 +1,5 @@
 import BusInfo from "../models/bus_info";
-import { Op } from "sequelize";
+import { Op, fn, col } from "sequelize";
 
 //---App---
 //bus Inquiry
@@ -49,7 +49,6 @@ export const busTime = async (req, res, next) => {
 //bus Inquiry
 export const admBusPagenum = async (req, res, next) => {
   const { bus_date, type } = req.body;
-  console.log(req.body);
   try {
     const data = await BusInfo.findAndCountAll({
       where: {
@@ -66,7 +65,6 @@ export const admBusPagenum = async (req, res, next) => {
 
 export const admBusInquiry = async (req, res, next) => {
   const { bus_date, type, nowPage } = req.body;
-  console.log(req.body);
   try {
     const data = await BusInfo.findAll({
       where: {
@@ -91,16 +89,18 @@ export const admBusInquiry = async (req, res, next) => {
 
 //bus Update
 export const admBusUpdate = async (req, res, next) => {
-  const { bus_time, bus_date, bus_id, type } = req.body;
+  const { bus_time, bus_date, bus_id, type, bus_stop, bus_times } = req.body;
   try {
     const data = await BusInfo.update(
       {
         bus_time,
+        bus_date,
+        type,
+        bus_stop,
+        bus_times,
       },
       {
         where: {
-          bus_date,
-          type,
           bus_id,
         },
       }
@@ -143,6 +143,19 @@ export const admBusDelete = async (req, res, next) => {
     });
 
     return res.status(200).json("success");
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+};
+
+export const admBusStop = async (req, res, next) => {
+  try {
+    const data = await BusInfo.findAll({
+      attributes: [fn("DISTINCT", col("bus_stop")), "bus_stop"],
+    });
+
+    return res.status(200).json(data);
   } catch (err) {
     console.error(err);
     next(err);

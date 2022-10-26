@@ -82,16 +82,16 @@ export const user = async (req, res, next) => {
 
 export const login = async (req, res, next) => {
   console.log(req.body);
-  const { adm_id, password } = req.body;
+  const { std_id, password } = req.body;
   try {
-    const userInfo = await AdmInfo.findOne({
+    const userInfo = await StdInfo.findOne({
       where: {
-        adm_id,
+        std_id,
         password,
       },
     });
     if (userInfo) {
-      const userObj = { adm_name: userInfo.adm_name, adm_id };
+      const userObj = { std_name: userInfo.std_name, std_id };
       const accessToken = createToken(userObj, "1h");
       const hash = await createHash(userObj);
       const refreshToken = createToken({ hash }, "1y");

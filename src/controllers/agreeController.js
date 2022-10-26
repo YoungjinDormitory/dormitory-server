@@ -4,7 +4,7 @@ import StdWait from "../models/std_wait";
 //권한이 없는 학생 조회
 export const stdAgreePageNum = async (req, res, next) => {
   try {
-    const data = await StdWait.findAndCountAll();
+    const data = await StdWait.count();
     return res.status(200).json(data);
   } catch (err) {
     console.error(err);
@@ -13,6 +13,7 @@ export const stdAgreePageNum = async (req, res, next) => {
 };
 
 export const stdAgreeInquiry = async (req, res, next) => {
+  console.log("req.query : ", req.query);
   const { nowPage } = req.query;
   try {
     const data = await StdWait.findAll({
@@ -29,7 +30,7 @@ export const stdAgreeInquiry = async (req, res, next) => {
 
 export const stdPageNum = async (req, res, next) => {
   try {
-    const data = await StdInfo.findAndCountAll();
+    const data = await StdInfo.count();
     return res.status(200).json(data);
   } catch (err) {
     console.error(err);
@@ -77,9 +78,8 @@ export const stdAgree = async (req, res, next) => {
 export const stdDelete = async (req, res, next) => {
   const { std_id } = req.body;
   try {
-    let checkedStd = std_id;
     const data = await StdInfo.destroy({
-      where: { std_id: checkedStd },
+      where: std_id,
     });
     return res.status(200).json(data);
   } catch (err) {

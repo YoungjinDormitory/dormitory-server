@@ -143,7 +143,7 @@ export const admBusHome = async (req, res, next) => {
 
 //bus pageNum
 export const admBusPageNum = async (req, res, next) => {
-  const { nowPage, std_id, std_name, bus_stop, date } = req.body;
+  const { std_id, std_name, bus_stop, date } = req.body;
   try {
     const data = await BusRequest.findAndCountAll({
       include: [
@@ -161,29 +161,6 @@ export const admBusPageNum = async (req, res, next) => {
       },
     });
 
-    return res.status(200).json(data);
-  } catch (err) {
-    console.error(err);
-    next(err);
-  }
-};
-
-//bus inquiry
-export const admBusInquiry = async (req, res, next) => {
-  try {
-    const now = new Date();
-    now.setMonth(now.getMonth() + 1);
-    const data = await BusRequest.findAll({
-      attributes: ["bus_date", "bus_time", [fn("COUNT", col("bus_req_id")), "people_count"]],
-      where: {
-        bus_stop: req.body.type ? "복현캠퍼스" : "글로벌생활관",
-        bus_date: {
-          [Op.lte]: moment(now).toISOString(),
-        },
-      },
-      group: ["bus_date", "bus_time"],
-      raw: true,
-    });
     return res.status(200).json(data);
   } catch (err) {
     console.error(err);

@@ -97,27 +97,19 @@ export const stayoutDelete = async (req, res, next) => {
 export const admStayoutInquiry = async (req, res, next) => {
   const { std_id, std_name, nowPage } = req.body;
   try {
-    let Id = std_id;
-    let Name = std_name;
-    let page = nowPage;
-    Id = Id || { [Op.ne]: null };
-    Name = Name || { [Op.ne]: null };
-    if (!page) {
-      page = 1;
-    }
     const data = await StayoutRequest.findAll({
       include: [
         {
           model: StdInfo,
           where: {
-            std_id: Id,
-            std_name: Name,
+            std_id: std_id || { [Op.ne]: null },
+            std_name: std_name || { [Op.ne]: null },
           },
         },
       ],
       order: [["stayout_id", "DESC"]],
       limit: 10,
-      offset: (page - 1) * 10,
+      offset: (nowPage - 1) * 10,
     });
 
     return res.status(200).json(data);
@@ -131,17 +123,13 @@ export const admStayoutInquiry = async (req, res, next) => {
 export const admStayoutPageNum = async (req, res, next) => {
   const { std_id, std_name } = req.body;
   try {
-    let Id = std_id;
-    let Name = std_name;
-    Id = Id || { [Op.ne]: null };
-    Name = Name || { [Op.ne]: null };
     const data = await StayoutRequest.findAndCountAll({
       include: [
         {
           model: StdInfo,
           where: {
-            std_id: Id,
-            std_name: Name,
+            std_id: std_id || { [Op.ne]: null },
+            std_name: std_name || { [Op.ne]: null },
           },
         },
       ],
